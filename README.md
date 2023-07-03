@@ -1,5 +1,5 @@
 # PyDataStructures
-What we use to organise, edit and manipulate our data.
+What is used to organise, edit and manipulate data in Python.
 
 ---
 ### Classification
@@ -14,8 +14,17 @@ These are the focus of this repository. User defined data structures are non-pri
 - First-In/First-Out (**FIFO**): the first element is processed first and the newest added element is processed last. E.g. **queue**
 - Last-In/First-Out (**LIFO**): also known as FILO. The first element is processed last and the newest added element is processed first. E.g. tennis balls in a can, **stack**
 - Data structures are either linear (array, queue, etc) or non-linear (graph, tree, etc).
-- Static vs Dynamic: the size of a static structure is fixed (e.g. array) while the size of a dynamic structure is variable. Static = faster access, dynamic = slower.
+- Static vs Dynamic: the size of a static structure is fixed while the size of a dynamic structure is variable. Static = faster access, dynamic = slower. Most data structures are dynamic besides arrays.
 
 ---
 ### Queue
-- 
+
+![Queue Data Structure (from GeeksForGeeks)](/Queue.png?raw=true "Queue")
+
+- Linear, FIFO
+- Access: O(n)
+- Search: O(n)
+- Insert: O(1)
+- Delete: O(1)
+
+
