@@ -17,6 +17,22 @@ These are the focus of this repository. User defined data structures are non-pri
 - Static vs Dynamic: the size of a static structure is fixed while the size of a dynamic structure is variable. Static = faster access, dynamic = slower. Most data structures are dynamic besides arrays.
 
 ---
+### Stack
+
+![Stack Data Structure (from GeeksForGeeks)](/stack.png?raw=true "Queue")
+
+- Linear, LIFO
+- Access: O(n)
+- Search: O(n)
+- Insert: O(1)
+- Delete: O(1)
+- Push: insert to top of stack
+- Pop: remove from top of stack
+
+
+
+
+---
 ### Queue
 
 ![Queue Data Structure (from GeeksForGeeks)](/Queue.png?raw=true "Queue")
@@ -26,5 +42,46 @@ These are the focus of this repository. User defined data structures are non-pri
 - Search: O(n)
 - Insert: O(1)
 - Delete: O(1)
+- Enqueue: append to end of queue
+- Dequeue: pop from beginning of queue
+
+
+---
+### Linked List
+
+- Linear, FIFO
+- Access: O(n)
+- Search: O(n)
+- Insert: O(1)
+- Delete: O(1)
+
+
+Linked lists are similar to arrays but are created with Nodes. They are dynamic and more memory efficient since the size increases or decreases dynamically as new data is added and removed. Insertion and deletion is also far simpler as you know. There are three types of linked list:
+1. Singly Linked List
+2. Doubly Linked List
+3. Circular Linked List
+
+#### Singly Linked List
+Each node contains a reference to the next node in sequence. Can only traverse forwards.
+
+![Singly Linked List Data Structure (from GeeksForGeeks)](/singly-linked-list.png?raw=true "singly-linked-list")
+
+#### Doubly Linked List
+Each node contains references to previous and next node in sequence. Requires more memory, but can traverse backwards and forwards.
+
+![Doubly Linked List Data Structure (from GeeksForGeeks)](/doubly-linked-list.png?raw=true "doubly-linked-list")
+
+#### Circular Linked List
+The tail node points back to the head node. If implemented as a doubly linked list, the head's previous also points to the tail.
+
+![Circular Linked List Data Structure (from GeeksForGeeks)](/circular-linked-list.png?raw=true "circular-linked-list")
+
+
+
+
+
+---
+
+All credits and rights to GeeksForGeeks.com
 
 
