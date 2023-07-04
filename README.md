@@ -64,7 +64,7 @@ Linked lists are similar to arrays but are created with Nodes. They are dynamic 
 #### Singly Linked List
 Each node contains a reference to the next node in sequence. Can only traverse forwards.
 
-![Singly Linked List Data Structure (from GeeksForGeeks)](/singly-linked-list.png?raw=true "singly-linked-list")
+![Singly Linked List Data Structure (from GeeksForGeeks)](/single-linked-list.png?raw=true "singly-linked-list")
 
 #### Doubly Linked List
 Each node contains references to previous and next node in sequence. Requires more memory, but can traverse backwards and forwards.
