@@ -7,7 +7,8 @@ What is used to organise, edit and manipulate data in Python.
 Classified as either **primitive** or **non-primitive**. Easiest differentiation is that non-primitive data types can hold primitive data types, but opposite is not true.
 
 ![Python Data Structure Flow Chart (from GEEKedu)](/PyDataStructures-Flowchart.png?raw=true "PyDataStructures-Flowchart")
-<p style="text-align: center;"><sub><sup>Rights reserved to GEEKedu</sup></sub></p>
+\
+<sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 ---
 ### User Defined Data Structures
@@ -22,7 +23,8 @@ These are the focus of this repository. User defined data structures are non-pri
 ### Stack
 
 ![Stack Data Structure (from GeeksForGeeks)](/stack.png?raw=true "Queue")
-<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+\
+<sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 - Linear, LIFO
 - Access: O(n)
@@ -37,7 +39,8 @@ These are the focus of this repository. User defined data structures are non-pri
 ### Queue
 
 ![Queue Data Structure (from GeeksForGeeks)](/Queue.png?raw=true "Queue")
-<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+\
+<sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 - Linear, FIFO
 - Access: O(n)
@@ -66,20 +69,23 @@ Linked lists are similar to arrays but are created with Nodes. They are dynamic 
 Each node contains a reference to the next node in sequence. Can only traverse forwards.
 
 ![Singly Linked List Data Structure (from GeeksForGeeks)](/single-linked-list.png?raw=true "singly-linked-list")
-<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+\
+<sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 
 #### Doubly Linked List
 Each node contains references to previous and next node in sequence. Requires more memory, but can traverse backwards and forwards.
 
 ![Doubly Linked List Data Structure (from GeeksForGeeks)](/doubly-linked-list.png?raw=true "doubly-linked-list")
-<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+\
+<sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 #### Circular Linked List
 The tail node points back to the head node. If implemented as a doubly linked list, the head's previous also points to the tail.
 
 ![Circular Linked List Data Structure (from GeeksForGeeks)](/circular-linked-list.png?raw=true "circular-linked-list")
-<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+\
+<sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 
 ---
@@ -87,7 +93,8 @@ The tail node points back to the head node. If implemented as a doubly linked li
 Moving on to the non-linear data structures, a tree consists of a root node from which other nodes can branch to all the way to the leaf nodes. Thanks to their structure they often have better **time complexity** for data operations.
 
 ![Tree Data Structure (from GeeksForGeeks)](/tree-data-structure.png?raw=true "tree-data-structure")
-<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+\
+<sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 We introduce new terminology. Think of it as a family tree:
 - Parent & Child Nodes
@@ -108,13 +115,14 @@ Trees are commonly **binary**, so each node can have max 2 children. We also hav
 - **N-ary** or **Generic** trees: no children limit
 
 ![Binary Tree (from GeeksForGeeks)](/binary-tree.png?raw=true "binary-tree")
-<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+\
+<sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 There are many more types of trees you will learn about; binary search trees, AVL trees, red-black trees, splay trees, cartesian trees, etc. Each has their own use and you should learn them.
 
 
 ---
 
-All credits and rights to GeeksForGeeks.com
+Learnt and summarised all these notes from GeeksForGeeks.
 
 
