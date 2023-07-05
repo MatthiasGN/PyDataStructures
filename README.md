@@ -1,12 +1,13 @@
 # PyDataStructures
 What is used to organise, edit and manipulate data in Python.
 
+
 ---
 ### Classification
 Classified as either **primitive** or **non-primitive**. Easiest differentiation is that non-primitive data types can hold primitive data types, but opposite is not true.
 
 ![Python Data Structure Flow Chart (from GEEKedu)](/PyDataStructures-Flowchart.png?raw=true "PyDataStructures-Flowchart")
-
+<p style="text-align: center;"><sub><sup>Rights reserved to GEEKedu</sup></sub></p>
 
 ---
 ### User Defined Data Structures
@@ -16,10 +17,12 @@ These are the focus of this repository. User defined data structures are non-pri
 - Data structures are either linear (array, queue, etc) or non-linear (graph, tree, etc).
 - Static vs Dynamic: the size of a static structure is fixed while the size of a dynamic structure is variable. Static = faster access, dynamic = slower. Most data structures are dynamic besides arrays.
 
+
 ---
 ### Stack
 
 ![Stack Data Structure (from GeeksForGeeks)](/stack.png?raw=true "Queue")
+<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
 
 - Linear, LIFO
 - Access: O(n)
@@ -30,12 +33,11 @@ These are the focus of this repository. User defined data structures are non-pri
 - Pop: remove from top of stack
 
 
-
-
 ---
 ### Queue
 
 ![Queue Data Structure (from GeeksForGeeks)](/Queue.png?raw=true "Queue")
+<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
 
 - Linear, FIFO
 - Access: O(n)
@@ -55,7 +57,6 @@ These are the focus of this repository. User defined data structures are non-pri
 - Insert: O(1)
 - Delete: O(1)
 
-
 Linked lists are similar to arrays but are created with Nodes. They are dynamic and more memory efficient since the size increases or decreases dynamically as new data is added and removed. Insertion and deletion is also far simpler as you know. There are three types of linked list:
 1. Singly Linked List
 2. Doubly Linked List
@@ -65,19 +66,51 @@ Linked lists are similar to arrays but are created with Nodes. They are dynamic 
 Each node contains a reference to the next node in sequence. Can only traverse forwards.
 
 ![Singly Linked List Data Structure (from GeeksForGeeks)](/single-linked-list.png?raw=true "singly-linked-list")
+<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+
 
 #### Doubly Linked List
 Each node contains references to previous and next node in sequence. Requires more memory, but can traverse backwards and forwards.
 
 ![Doubly Linked List Data Structure (from GeeksForGeeks)](/doubly-linked-list.png?raw=true "doubly-linked-list")
+<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
 
 #### Circular Linked List
 The tail node points back to the head node. If implemented as a doubly linked list, the head's previous also points to the tail.
 
 ![Circular Linked List Data Structure (from GeeksForGeeks)](/circular-linked-list.png?raw=true "circular-linked-list")
+<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
 
 
+---
+### Tree
+Moving on to the non-linear data structures, a tree consists of a root node from which other nodes can branch to all the way to the leaf nodes. Thanks to their structure they often have better **time complexity** for data operations.
 
+![Tree Data Structure (from GeeksForGeeks)](/tree-data-structure.png?raw=true "tree-data-structure")
+<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+
+We introduce new terminology. Think of it as a family tree:
+- Parent & Child Nodes
+- Root Node
+- Leaf or External Nodes
+- Ancestor and Descendant Nodes (i.e. parent nodes, parents of parent nodes, children of children)
+- Sibling nodes (same parent node)
+
+
+And some general terminology:
+- Subtree: any sub-section of the tree where all nodes have a common ancestor
+- **Level/depth of a node**: the number of edges between this node and the root node
+- **Degree of a node**: total number of subtrees attached to that node not including itself
+
+\
+Trees are commonly **binary**, so each node can have max 2 children. We also have:
+- **Ternary** trees: at most 3 children nodes
+- **N-ary** or **Generic** trees: no children limit
+
+![Binary Tree (from GeeksForGeeks)](/binary-tree.png?raw=true "binary-tree")
+<p style="text-align: center;"><sub><sup>Rights reserved to GeeksForGeeks</sup></sub></p>
+
+There are many more types of trees you will learn about; binary search trees, AVL trees, red-black trees, splay trees, cartesian trees, etc. Each has their own use and you should learn them.
 
 
 ---
