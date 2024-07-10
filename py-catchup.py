@@ -318,46 +318,83 @@ import time
 # print(sys.byteorder)
 
 # 78.
+# print(sys.builtin_module_names)
 
+# 79. Size in bytes of each variable. Note how the size is the same between strings / integers that arent too far apart. Thanks to padding.
+# str1 = "four"
+# str2 = "fives"
+# int1 = 69
+# int2 = 420
 
-# 79.
+# print(str1 + ": " + str(sys.getsizeof(str1)))
+# print(str2 + ": " + str(sys.getsizeof(str1)))
+# print(str(int1) + ": " + str(sys.getsizeof(int1)))
+# print(str(int2) + ": " + str(sys.getsizeof(int2)))
 
-
-# 80.
-
+# 80. Really good manual attempt here. Need to learn exceptions properly
+# def recursion_limit(n):
+#     try:
+#         return recursion_limit(n+1)
+#     except Exception as err:
+#         print(n, err)
+# recursion_limit(1)
+# print(sys.getrecursionlimit())
 
 # 81.
-
+# ~
 
 # 82.
-
+# ~
 
 # 83.
-
+# ~
 
 # 84.
-
+# ~
 
 # 85.
-
+# ~
 
 # 86.
-
+# ~
 
 # 87.
-
+# print(os.path.getsize("py-catchup.py"), "bytes")
 
 # 88.
-
+# ~
 
 # 89.
+# ~
 
+# 90. open() opens a file and returns it as a file object. Default is 'r' read, also 'a' append, 'w' write, 'x' create.
+# Actually a huge lesson here. I never use 'with'. I should use it more. Essentially allows for much more readable code
+# as well as reusable exception handling. For example, look at the following:
+# file = open('a.txt', 'w')
+# try:
+#     file.write('hello world')
+# finally:
+#     file.close()
 
-# 90.
+# That whole thing can be condensed into:
+# with open('a.txt', 'w') as file:
+#     file.write('hello world')
 
+# Error checking isn't even necessary because 'with' handles most cases. You can of course implement your own where necessary.
+# Very useful for improving the quality and cleanliness of your code.
+# 
+# After a bit more research. Basically any time you're working with files or threading, you probably want to use a 'with' statement.
+# It's a context manager, which means that it cleans up and manages multiple files, processes or threads working at the same time.
+# Besides that it won't get much use. Is essentially a better version of try: finally:, though.
+
+src = 'py-catchup.py'
+dest = 'py-catchup-short.py'
+with open(src, 'r') as f, open(dest, 'w') as d:
+    for line in f:
+        d.write(line)
 
 # 91.
-
+# ~
 
 # 92.
 
