@@ -387,11 +387,11 @@ import time
 # It's a context manager, which means that it cleans up and manages multiple files, processes or threads working at the same time.
 # Besides that it won't get much use. Is essentially a better version of try: finally:, though.
 
-src = 'py-catchup.py'
-dest = 'py-catchup-short.py'
-with open(src, 'r') as f, open(dest, 'w') as d:
-    for line in f:
-        d.write(line)
+# src = 'py-catchup.py'
+# dest = 'py-catchup-short.py'
+# with open(src, 'r') as f, open(dest, 'w') as d:
+#     for line in f:
+#         d.write(line)
 
 # 91.
 # ~
