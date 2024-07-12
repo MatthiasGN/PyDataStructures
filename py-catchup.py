@@ -14,6 +14,9 @@ import multiprocessing
 import cProfile
 import socket
 import time
+import traceback
+import glob
+import json
 
 # All exercises from w3resource.com.
 
@@ -432,16 +435,197 @@ non-ASCII characters (i.e. UTF-8) such as emojis, accented characters, etc.
 '''
 
 # 95.
+# ~
 
+# 96. Printing the call stack is done automatically with error checking. Could be useful.
+# def f1():
+#     return f2()
 
-# 96.
+# def f2():
+#     # n = 1/0
+#     traceback.print_stack()
+
+# f1()
 
 
 # 97.
+# ~
 
+# 98. Note this one down. Useful for debugging, network information and random number seeds.
+# print(time.ctime())
 
-# 98.
+# 99. Underratedly useful.
+# subprocess.Popen("clear", shell=True).wait()
 
+# 100. 
+# ~
 
-# 99.
+# 101.
+# ~
 
+# 102. Pretty cool and probably useful tbh. You should be using subprocess more often.
+# print(subprocess.check_output("ls", shell=True, universal_newlines=True))
+
+# 103.
+# ~
+
+# 104.
+# print(os.getegid())
+# print(os.geteuid())
+# print(os.getgid())
+# print(os.getgroups())
+
+# 105.
+# print(os.environ)
+
+# 106.
+# ~
+
+# 107.
+# print(os.path.__file__)
+# print(time.ctime(os.path.getmtime(os.path.__file__)))
+# print(os.path.getsize(os.path.__file__))
+
+# 108.
+# ~
+
+# 109.
+# ~
+
+# 110.
+# ~
+
+# 111. Actually pretty useful.
+# print(glob.glob('*.py'))
+
+# 112.
+# ~
+
+# 113.
+# a = input("A: ")
+# try:
+#     a = int(a)
+# except Exception as err:
+#     print("Input must be a number.")
+# print(a)
+
+# 114.
+# ~
+
+# 115.
+# ~
+
+# 116.
+# ~
+
+# 117. Actually useful.
+# a = 'aaa'
+# b = 'aaa'
+# print(hex(id(a)))
+# print(hex(id(b)))
+
+# 118.
+# ~
+
+# 119.
+# ~
+
+# 120.
+# ~
+
+# 121.
+# ~
+
+# 122.
+# ~
+
+# 123.
+# print(sys.float_info)
+# print(sys.int_info)
+# print(sys.maxsize)
+
+# 124.
+# ~
+
+# 125.
+# ~
+
+# 126.
+# ~
+
+# 127.
+# ~
+
+# 128.
+# ~
+
+# 129.
+# ~
+
+# 130.
+# data = {'Alex': 1, 'Suresh': 2, 'Agnessa': 3}
+# print(data)
+# print(json.dumps(data))
+
+# 131.
+# ~
+
+# 132.
+# ~
+
+# 133.
+# ~
+
+# 134. Genuinely a good function to learn. MAP.
+# x, y = map(int, input("Input the value of x & y: ").split())
+# print("The value of x & y are: ", x, y)
+
+# 135.
+# ~
+
+# 136.
+# ~
+
+# 137.
+# ~
+
+# 138. Not bad either
+# print(True.real)
+# print(False.real)
+
+# 139.
+# ~
+
+# 140.
+# ~
+
+# 141.
+# num = 30
+# print(str(hex(num)).split('x')[1])
+
+# 142.
+# ~
+
+# 143.
+# ~
+
+# 144.
+# ~
+
+# 145.
+# ~
+
+# 146.
+# ~
+
+# 147.
+# ~
+
+# 148.
+# ~
+
+# 149.
+# ~
+
+# 150.
+# ~
