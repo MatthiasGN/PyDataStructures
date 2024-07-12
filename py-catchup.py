@@ -397,13 +397,39 @@ import time
 # ~
 
 # 92.
+# ~
 
+# 93. Interesting. id(object) gives you the memory address of the object.
+# x = 53
+# print("Identity: %s, Type: %s, Memory Address: %s" % (x, type(x), id(x)))
 
-# 93.
+'''
+94. Hijacking this question to learn about the different types of String literals available through prefixes.
+First we have f-strings, e.g. f'Example'. An f-string is actually just a longer version of string.format.
+name = "Matty"
+adjective = "Genius"
+print("{} is {}".format(name, adjective))
+is the same as 
+print(f"{name} is {adjective}")
+Other languages have these features more naturally, so f-strings are Python's version.
+For clarity, this process is called string interpolation - interpolating variables into strings.
 
+Next we have b-strings. A byte string is literally a sequence of bytes, and isn't actually human-readable.
+byte_str = b'Byte string'
+print(byte_str)
+So how come we can print this successfully? Well, Python decodes them from UTF-8 when you print them.
+That's actually exactly what the 'print' function does - it converts byte information from memory to UTF-8 characters
+for human readability.
 
-# 94.
+Then we have r-strings. An r-string is a raw string. A good way to think about it is that an f-string
+is essentially a string with batteries included, i.e. extra features. Whereas an r-string is a string with all
+extra features removed, completely minimalist. An r-string ignores escape characters. So the use case for it
+might be a function that feeds a string with escape characters into another function to eventually print it.
 
+Finally we have u-strings. U-strings are unicode literals. Python3 strings are unicode by default so you
+probably don't need to worry about these unless you venture into Python2 for work. U-strings allow you to use
+non-ASCII characters (i.e. UTF-8) such as emojis, accented characters, etc.
+'''
 
 # 95.
 
