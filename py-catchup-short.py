@@ -53,12 +53,12 @@ import json
 # date2 = datetime.date(2024, 7, 5)
 # print(date1-date2)
 
-# 19.
-# stringls = input("string: ")
-# if len(stringls) > 1 and stringls[:2] == 'Is':
-#     print(stringls)
-# else:
-#     print("Is" + stringls)
+'''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
+stringls = input("string: ")
+if len(stringls) > 1 and stringls[:2] == 'Is':
+    print(stringls)
+else:
+    print("Is" + stringls)
 
 # 24.
 # letter = input("Letter: ")
@@ -69,9 +69,10 @@ import json
 # else:
 #     print("Consonant")
 
+'''**'''
 # 42. To determine if a Python shell is executing in 32-bit mode or 64-bit mode on OS.
 # The reason this works is because a struct is custom sized to the mode. I.e. 4 bits in 32-bit mode and 8 bits in 64-bit mode.
-# print(struct.calcsize("P") * 8)
+print(struct.calcsize("P") * 8)
 
 # 43.
 # print(os.name)
@@ -81,26 +82,30 @@ import json
 # 44. Really good for understanding where the Python packages are. This is where all the pip files get installed.
 # print(site.getsitepackages())
 
+'''**'''
 # 45.
 # print(os.system('ls'))
 # Below is better. More flexible
-# print(subprocess.Popen("ls", shell=True).wait())
+print(subprocess.Popen("ls", shell=True).wait())
 
 # 46.
 # print("Current File Name: ", os.path.realpath(__file__))
 
+'''**'''
 # 47. Number of cores/CPUs being used. More CPUs allows for more multi-threading and running several applications at once.
 # Especially important for video editing. Rendering. Useful for gaming with high graphics requirements too (also a form of rendering)
-# print(multiprocessing.cpu_count())
+print(multiprocessing.cpu_count())
 
+'''**'''
 # 50. Pretty nice line you never knew here. Could be really useful for constructing a string in a loop
-# print("No newline", end="")
-# print(", please")
+print("No newline", end="")
+print(", please")
 
+'''**'''
 # 51. Actually super useful for testing running times. cProfile. Use it.
-# def multiply(a, b):
-#     return a*b
-# cProfile.run('multiply(54,123)')
+def multiply(a, b):
+    return a*b
+cProfile.run('multiply(54,123)')
 
 # 52. Again, genuinely useful stuff here.
 # print("*-------------------------*")
@@ -132,8 +137,9 @@ import json
 # sol, tim = sum_of_n_numers(n)
 # print("n = %s, solution is %s, time taken is %s" % (n, sol, tim))
 
+'''**'''
 # 76. One of the earliest things you learnt
-# print(sys.argv)
+print(sys.argv)
 
 # 77. Shows if your system is a big-endian or little-endian platform. Little endian means the digit of littlest significance is stored in memory first,
 # big endian means the digit of biggest significance is stored in memory first.
@@ -141,16 +147,17 @@ import json
 # Most platforms use little endian. However, protocols like TCP/IP are big endian.
 # print(sys.byteorder)
 
+'''**'''
 # 79. Size in bytes of each variable. Note how the size is the same between strings / integers that arent too far apart. Thanks to padding.
-# str1 = "four"
-# str2 = "fives"
-# int1 = 69
-# int2 = 420
+str1 = "four"
+str2 = "fives"
+int1 = 69
+int2 = 420
 
-# print(str1 + ": " + str(sys.getsizeof(str1)))
-# print(str2 + ": " + str(sys.getsizeof(str1)))
-# print(str(int1) + ": " + str(sys.getsizeof(int1)))
-# print(str(int2) + ": " + str(sys.getsizeof(int2)))
+print(str1 + ": " + str(sys.getsizeof(str1)))
+print(str2 + ": " + str(sys.getsizeof(str1)))
+print(str(int1) + ": " + str(sys.getsizeof(int1)))
+print(str(int2) + ": " + str(sys.getsizeof(int2)))
 
 # 80. Really good manual attempt here. Need to learn exceptions properly
 # def recursion_limit(n):
@@ -164,6 +171,7 @@ import json
 # 87.
 # print(os.path.getsize("py-catchup.py"), "bytes")
 
+'''**'''
 # 90. open() opens a file and returns it as a file object. Default is 'r' read, also 'a' append, 'w' write, 'x' create.
 # Actually a huge lesson here. I never use 'with'. I should use it more. Essentially allows for much more readable code
 # as well as reusable exception handling. For example, look at the following:
@@ -174,8 +182,8 @@ import json
 #     file.close()
 
 # That whole thing can be condensed into:
-# with open('a.txt', 'w') as file:
-#     file.write('hello world')
+with open('a.txt', 'w') as file:
+    file.write('hello world')
 
 # Error checking isn't even necessary because 'with' handles most cases. You can of course implement your own where necessary.
 # Very useful for improving the quality and cleanliness of your code.
@@ -190,9 +198,10 @@ import json
 #     for line in f:
 #         d.write(line)
 
+'''**'''
 # 93. Interesting. id(object) gives you the memory address of the object. hex(id(x)) is also useful.
 # x = 53
-# print("Identity: %s, Type: %s, Memory Address: %s" % (x, type(x), id(x)))
+print("Identity: %s, Type: %s, Memory Address: %s" % (x, type(x), id(x)))
 
 '''
 94. Hijacking this question to learn about the different types of String literals available through prefixes.
@@ -231,8 +240,9 @@ non-ASCII characters (i.e. UTF-8) such as emojis, accented characters, etc.
 # 102. Pretty cool and probably useful tbh. You should be using subprocess more often.
 # print(subprocess.check_output("ls", shell=True, universal_newlines=True))
 
+'''**'''
 # 111. Actually pretty useful.
-# print(glob.glob('*.py'))
+print(glob.glob('*.py'))
 
 # 113.
 # a = input("A: ")
@@ -253,10 +263,12 @@ non-ASCII characters (i.e. UTF-8) such as emojis, accented characters, etc.
 # print(sys.int_info)
 # print(sys.maxsize)
 
+'''**'''
 # 134. Genuinely a good function to learn. MAP.
-# x, y = map(int, input("Input the value of x & y: ").split())
-# print("The value of x & y are: ", x, y)
+x, y = map(int, input("Input the value of x & y: ").split())
+print("The value of x & y are: ", x, y)
 
+'''**'''
 # 138. Not bad either
-# print(True.real)
-# print(False.real)
+print(True.real)
+print(False.real)
