@@ -123,6 +123,6 @@ There are many more types of trees you will learn about; binary search trees, AV
 
 ---
 
-Learnt and summarised all these notes from GeeksForGeeks.
+Learnt and summarised from GeeksForGeeks.
 
 
