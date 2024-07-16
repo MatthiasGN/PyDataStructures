@@ -60,7 +60,7 @@ These are the focus of this repository. User defined data structures are non-pri
 - Insert: O(1)
 - Delete: O(1)
 
-Linked lists are similar to arrays but are created with Nodes. They are dynamic and more memory efficient since the size increases or decreases dynamically as new data is added and removed. Insertion and deletion is also far simpler as you know. There are three types of linked list:
+Linked lists are similar to arrays but created with Nodes. They are dynamic and more memory efficient since the size increases or decreases dynamically as new data is added and removed. Insertion and deletion is also far simpler as you know. There are three types of linked list:
 1. Singly Linked List
 2. Doubly Linked List
 3. Circular Linked List
