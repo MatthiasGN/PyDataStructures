@@ -1,7 +1,4 @@
-import string
-import random
 import math
-import numpy as np
 
 '''1.9 String Formatting'''
 # never knew about sep, nor the dictionary formatting. Nice
