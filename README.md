@@ -6,7 +6,7 @@ What is used to organise, edit and manipulate data in Python.
 ### Classification
 Classified as either **primitive** or **non-primitive**. Easiest differentiation is that non-primitive data types can hold primitive data types, but opposite is not true.
 
-![Python Data Structure Flow Chart (from GEEKedu)](/PyDataStructures-Flowchart.png?raw=true "PyDataStructures-Flowchart")
+![Python Data Structure Flow Chart (from GEEKedu)](/img/ds-flowchart.png?raw=true "PyDataStructures-Flowchart")
 \
 <sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
@@ -22,7 +22,7 @@ These are the focus of this repository. User defined data structures are non-pri
 ---
 ### Stack
 
-![Stack Data Structure (from GeeksForGeeks)](/stack.png?raw=true "Queue")
+![Stack Data Structure (from GeeksForGeeks)](/img/stack.png?raw=true "Queue")
 \
 <sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
@@ -38,7 +38,7 @@ These are the focus of this repository. User defined data structures are non-pri
 ---
 ### Queue
 
-![Queue Data Structure (from GeeksForGeeks)](/Queue.png?raw=true "Queue")
+![Queue Data Structure (from GeeksForGeeks)](/img/Queue.png?raw=true "Queue")
 \
 <sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
@@ -68,7 +68,7 @@ Linked lists are similar to arrays but are created with Nodes. They are dynamic 
 #### Singly Linked List
 Each node contains a reference to the next node in sequence. Can only traverse forwards.
 
-![Singly Linked List Data Structure (from GeeksForGeeks)](/single-linked-list.png?raw=true "singly-linked-list")
+![Singly Linked List Data Structure (from GeeksForGeeks)](/img/single-linked-list.png?raw=true "singly-linked-list")
 \
 <sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
@@ -76,14 +76,14 @@ Each node contains a reference to the next node in sequence. Can only traverse f
 #### Doubly Linked List
 Each node contains references to previous and next node in sequence. Requires more memory, but can traverse backwards and forwards.
 
-![Doubly Linked List Data Structure (from GeeksForGeeks)](/doubly-linked-list.png?raw=true "doubly-linked-list")
+![Doubly Linked List Data Structure (from GeeksForGeeks)](/img/doubly-linked-list.png?raw=true "doubly-linked-list")
 \
 <sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
 #### Circular Linked List
 The tail node points back to the head node. If implemented as a doubly linked list, the head's previous also points to the tail.
 
-![Circular Linked List Data Structure (from GeeksForGeeks)](/circular-linked-list.png?raw=true "circular-linked-list")
+![Circular Linked List Data Structure (from GeeksForGeeks)](/img/circular-linked-list.png?raw=true "circular-linked-list")
 \
 <sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
@@ -92,7 +92,7 @@ The tail node points back to the head node. If implemented as a doubly linked li
 ### Tree
 Moving on to the non-linear data structures, a tree consists of a root node from which other nodes can branch to all the way to the leaf nodes. Thanks to their structure they often have better **time complexity** for data operations.
 
-![Tree Data Structure (from GeeksForGeeks)](/tree-data-structure.png?raw=true "tree-data-structure")
+![Tree Data Structure (from GeeksForGeeks)](/img/tree-data-structure.png?raw=true "tree-data-structure")
 \
 <sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
@@ -114,7 +114,7 @@ Trees are commonly **binary**, so each node can have max 2 children. We also hav
 - **Ternary** trees: at most 3 children nodes
 - **N-ary** or **Generic** trees: no children limit
 
-![Binary Tree (from GeeksForGeeks)](/binary-tree.png?raw=true "binary-tree")
+![Binary Tree (from GeeksForGeeks)](/img/binary-tree.png?raw=true "binary-tree")
 \
 <sub><sup>Rights reserved to GeeksForGeeks</sup></sub>
 
