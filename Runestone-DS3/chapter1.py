@@ -3,6 +3,14 @@ import random
 import math
 import numpy as np
 
+'''1.9 String Formatting'''
+# never knew about sep, nor the dictionary formatting. Nice
+print("Yes", "hello", "is", "anyone", "there", sep="...")
+yep = {"age":23, "money":420.69}
+print("He is %(age)d years old and has %(money).2f dollars." % yep)
+# interesting, a little unusable, but still...
+print(f"Age:{yep['age']:.>7}\n" + f"Money:{'$':.>4}{yep['money']:5.2f}")
+
 '''1.10 Control Structures'''
 # List comprehension. Really try to start using this in your code. Cleans things up a lot. But make sure it's readable.
 # sq_list = [x ** 2 for x in range(6) if x % 2 != 0]
@@ -58,7 +66,23 @@ The reason you weren't up to date with this is because it was only introduced in
 class Fraction:
 
     def __init__(self, num: int, den: int):
-        gcd = math.gcd(int(num), int(den))
+        if type(num) == float and num % 1 == 0:
+            num = int(num)
+
+        if type(den) == float and den % 1 == 0:
+            den = int(den)
+
+        if not (type(num) == int and type(den) == int):
+            raise ValueError("Fraction inputs must be integer.")
+        
+        if den == 0:
+            raise ZeroDivisionError("Denominator cannot be zero.")
+        
+        if den < 0:
+            den = -den
+            num = -num
+        
+        gcd = math.gcd(num, den)
         while gcd > 1:
             num = num / gcd
             den = den / gcd
@@ -66,7 +90,16 @@ class Fraction:
         self.num = num
         self.den = den
 
-    def __str__(self) -> str:
+    # Pretty important here. Whenever you make a custom class, you should by second nature create the __repr__ function.
+    # So create __init__ and __repr__ always, then use encapsulation (getters and setters) too. Repr is so important because
+    # it provides a way to debug your class when it creates an error. Essentially, if __str__ is not defined it actually defaults
+    # to __repr__. The way to think about it is: the goal of __repr__ is to be unambiguous for developers, and the goal of
+    # __str__ is to be readable for users.
+
+    def __repr__(self):
+        return "Fraction(%d, %d)" % (self.num, self.den)
+
+    def __str__(self):
         # Note how %d casts to an int
         return "%d/%d" % (self.num, self.den)
     
@@ -75,6 +108,17 @@ class Fraction:
         den = self.den * fraction2.den
         return Fraction(num, den)
     
+    # Real interesting here. This refers to Right-hand addition. I.e. how should the compiler deal with 3 + Fraction(2,3) ?
+    # It defaults to 3's __add__ function, but that function doesn't specify how to work with your new Fraction class.
+    # If that returns NotImplemented, then the Fraction's radd method is checked. Nice. You have this for all arithmetic operations.
+    # Then you also have __iadd__, which is iterative addition, i.e. 3 += Fraction(1, 2).
+    def __radd__(self, other):
+        if not type(other) == int:
+            raise ValueError("Can only add Fraction to integer.")
+
+        num = self.num + other * self.den
+        return Fraction(num, self.den)
+
     def __mul__(self, fraction2):
         num = self.num * fraction2.num
         den = self.den * fraction2.den
@@ -84,13 +128,38 @@ class Fraction:
     # tests two identical objects, the equality check returns False. More on shallow vs deep a bit lower.
     def __eq__(self, fraction2):
         return self.num == fraction2.num and self.den == fraction2.den
+    
+    def __gt__(self, fraction2):
+        return (self.num / self.den) > (fraction2.num / fraction2.den)
+    
+    def __ge__(self, fraction2):
+        if not self.__eq__(fraction2):
+            return self.__gt__(fraction2)
+        return True
+    
+    def __lt__(self, fraction2):
+        return (self.num / self.den) < (fraction2.num / fraction2.den)
+    
+    def __le__(self, fraction2):
+        return fraction2.__ge__(self)
+    
+    def get_num(self):
+        return self.num
+    
+    def get_den(self):
+        return self.den
 
 fraction1 = Fraction(6,9)
 print(fraction1)
-fraction2 = Fraction(1, 6)
+fraction2 = Fraction(1,6)
 print(fraction1 + fraction2)
 print(fraction1 * fraction2)
 print(fraction1 == Fraction(6,9))
+print(fraction1 > Fraction(6,9))
+print(fraction1 >= Fraction(7,9))
+print(fraction1 < Fraction(7,9))
+print(fraction1 <= Fraction(5,9))
+print(3 + fraction1)
 
 '''
 Since I've just used it above, let's learn string formatting. The different kinds are as follows:
