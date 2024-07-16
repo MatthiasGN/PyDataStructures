@@ -4,7 +4,7 @@ What is used to organise, edit and manipulate data in Python.
 
 ---
 ### Classification
-Classified as either **primitive** or **non-primitive**. Easiest differentiation is that non-primitive data types can hold primitive data types, but opposite is not true.
+Classified as either **primitive** or **non-primitive**. Easiest differentiation is that non-primitive data types can hold primitive data types, but opposite isn't true.
 
 ![Python Data Structure Flow Chart (from GEEKedu)](/img/ds-flowchart.png?raw=true "PyDataStructures-Flowchart")
 \
