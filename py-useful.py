@@ -45,18 +45,18 @@ print(glob.glob('*.py'))
 # print(abs.__doc__)
 
 # Genuinely a good function to learn. MAP.
-x, y = map(int, input("Input the value of x & y: ").split())
-print("The value of x & y are: ", x, y)
+# x, y = map(int, input("Input the value of x & y: ").split())
+# print("The value of x & y are: ", x, y)
 
 # print(datetime.datetime.now())
 # print(calendar.month(2024, 10))
 
-stringls = input("string: ")
-# this logic works
-if len(stringls) > 1 and stringls[:2] == 'Is':
-    print(stringls)
-else:
-    print("Is" + stringls)
+# stringls = input("string: ")
+# # this logic works
+# if len(stringls) > 1 and stringls[:2] == 'Is':
+#     print(stringls)
+# else:
+#     print("Is" + stringls)
 
 # Running times and call times
 def multiply(a, b):
@@ -93,7 +93,7 @@ print(str(int1) + ": " + str(sys.getsizeof(int1)))
 print(str(int2) + ": " + str(sys.getsizeof(int2)))
 
 x = 53
-print("Identity: %s, Type: %s, Memory Address: %s" % (x, type(x), id(x)))
+print("Identity: %s, Type: %s, Memory Address: %s" % (x, type(x), hex(id(x))))
 
 
 # open() opens a file and returns it as a file object. Default is 'r' read, also 'a' append, 'w' write, 'x' create.

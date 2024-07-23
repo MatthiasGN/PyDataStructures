@@ -1,17 +1,19 @@
 import math
+import random
 
 '''1.9 String Formatting'''
 # never knew about sep, nor the dictionary formatting. Nice
 print("Yes", "hello", "is", "anyone", "there", sep="...")
-yep = {"age":23, "money":420.69}
+yep = {"age":23, "money":420.69123123}
 print("He is %(age)d years old and has %(money).2f dollars." % yep)
 # interesting, a little unusable, but still...
 print(f"Age:{yep['age']:.>7}\n" + f"Money:{'$':.>4}{yep['money']:5.2f}")
 
 '''1.10 Control Structures'''
 # List comprehension. Really try to start using this in your code. Cleans things up a lot. But make sure it's readable.
-# sq_list = [x ** 2 for x in range(6) if x % 2 != 0]
-# print(sq_list)
+# Saves a LOT of efficiency too.
+sq_list = [x ** 2 for x in range(6) if x % 2 != 0]
+print(sq_list)
 
 '''1.11 Exception Handling'''
 # Two types of errors in programs. We have syntax errors, which are caught by the compiler,
@@ -47,7 +49,7 @@ print(f"Age:{yep['age']:.>7}\n" + f"Money:{'$':.>4}{yep['money']:5.2f}")
 
 '''1.13 Defining Classes'''
 '''A couple things to learn here. For functions more generally, we've learnt that parameters are not inherently typed in Python.
-We say they are 'duck typed', which means that we don't inherently define variables/parameters, we just examine they behaviour.
+We say they are 'duck typed', which means that we don't inherently define variables/parameters, we just examine their behaviour.
 If it looks and quacks like a duck, then it is a duck. The advantage of this is that the compiler can be more lightweight since 
 it doesn't have to do as much type checking. There are also type hints now too: '''
 # def add(num1: float, num2: float) -> float:
@@ -122,7 +124,7 @@ class Fraction:
         return Fraction(num, den)
     
     # Test deep vs shallow equality by commenting these two lines out. When they're commented, even though the equality check a couple lines down
-    # tests two identical objects, the equality check returns False. More on shallow vs deep a bit lower.
+    # tests two identical objects, the equality check returns False. More on shallow vs deep below.
     def __eq__(self, fraction2):
         return self.num == fraction2.num and self.den == fraction2.den
     
@@ -164,7 +166,7 @@ Since I've just used it above, let's learn string formatting. The different kind
 Using these actually typecasts the variable before printing.
 %r is useful if you want to avoid errors and just understand what's going on. It's actually the same
 as just printing the object directly, %r just allows you to interpolate it into a string.
-With a class you can actually define how it's formatted as a string in %s with def __str__(self)
+When printing a class with %s, it defaults to the __str__ function.
 '''
 var = 69
 print("Raw: %r, int: %d, float: %.2f, str: %s, hex: %x, oct: %o" % (var, var, var, var, var, var))
@@ -226,17 +228,17 @@ class Foo:
 
 '''
 Last thing to note with classes. A custom class constructor should always invoke the constructor
-of its parent before continuing on with its own data and behaviour.'''
+of its parent before continuing on with its own data and behaviour. i.e. super.__init__()
 
-'''1.15 Key Terms'''
 
-'''Abstract Data Type (ADT): essentially where behaviour is defined but not implementation. 
+1.15 Key Terms
+
+Abstract Data Type (ADT): essentially where behaviour is defined but not implementation. 
 Examples include List, Queue, Set, Tree, etc.
 Note that an ADT is not necessarily the opposite of a Primitive data type; arrays are examples of
 non-primitive, non-abstract data types.
 
-Primitive data type: a basic data type from which all other data types are constructed. Examples include
-int, string, float, etc.
+Primitive data type: a basic data type from which all other data types are constructed. We have chars, ints, floats, and bools.
 
 Encapsulation: this refers to the idea of only allowing the modification of a Class's variables by methods within that class.
 I.e. encapsulate both the assignment and modification of variables WITHIN a class.

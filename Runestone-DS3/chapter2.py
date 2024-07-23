@@ -4,7 +4,7 @@ import time
 from timeit import Timer
 
 '''2.2 Algorithm Analysis
-There's a big difference between a program and the algorithm the program is representing. One algorithm can be implemented 
+There's a big difference between a program and the algorithm the program is representing. One algorithm can be implemented
 in many different ways/programs. So, we should analyse the different ways to find the most efficient implementation.
 Checking the running time of a function can be very useful, especially if it's called multiple times in the running of company systems.
 '''
@@ -111,6 +111,6 @@ set key/value: O(1)
 del key/value: O(1)
 contains: O(1)
 
-These are ON AVERAGE. There are rare cases where these degenerate to O(n) performance.
+These are ON AVERAGE. There are rare cases where these degenerate to O(n) performance. More on that later.
 
 '''
