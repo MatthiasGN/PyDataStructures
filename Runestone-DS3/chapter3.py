@@ -25,9 +25,8 @@ Non-Primitive (user-defined):
 - Trees
 - etc
 
-'''
 
-'''3.3 Stacks
+3.3 Stacks
 
 Our first linear data type. Addition and removal of new items is at the same end; the top of the stack.
 We call this last in, first out (LIFO). The thing to remember with FIFO and LIFO is that the first part
@@ -91,3 +90,129 @@ s.push(1)
 s.push(2)
 s.push(3)
 print(s)
+
+
+'''3.6 Balanced Parentheses
+Balancing parentheses is almost always achieved through Stacks.
+'''
+
+def par_checker(pars):
+    s = Stack()
+    for par in pars:
+        if par in '({[':
+            s.push(par)
+        elif not s.is_empty():
+            if abs(ord(par)-ord(s.peek())) < 3:
+                s.pop()
+            else:
+                return False
+        else:
+            return False
+        
+    return s.is_empty()
+
+print(par_checker("((()))"), end=", ")  # expected True
+print(par_checker("((()()))"), end=", ")  # expected True
+print(par_checker("(()"), end=", ")  # expected False
+print(par_checker(")("), end=", ")  # expected False
+print(par_checker('{({([][])}())}'), end=", ")
+print(par_checker('[{()]'))
+
+'''A really interesting way to check for equality between two alphabet-like structures. Use index to match by position!'''
+def matches(sym_left, sym_right):
+    all_lefts = "([{"
+    all_rights = ")]}"
+    return all_lefts.index(sym_left) == all_rights.index(sym_right)
+
+
+'''3.8 Decimal to Binary
+Something you may be noticing is that Stacks are a great choice of data structure whenever a REVERSAL of order is required in the algorithm.
+'''
+
+def base_converter(num: int, base: int) -> str:
+    digits = '0123456789ABCDEF'
+
+    s = Stack()
+    while num > 0:
+        s.push(num % base)
+        num = num // base
+    
+    binary = ''
+    while not s.is_empty():
+        binary += digits[s.pop()]
+    return binary
+
+print(base_converter(233, 2), end=", ")
+print(base_converter(233, 3), end=", ")
+print(base_converter(233, 8), end=", ")
+print(base_converter(233, 16))
+
+
+def infix_to_postfix(infix: str) -> str:
+    op_stack = Stack()
+    operators = '+-/·^()'
+    tokens = infix.split()
+    postfix = ''
+
+    for token in tokens:
+        if token in operators:
+            if token == ')':
+                postfix += op_stack.pop()
+            elif token != '(':
+                op_stack.push(token)
+        else:
+            postfix += token
+    
+    return postfix
+
+print(infix_to_postfix('( ( A + B ) · C )'), end=", ")
+print(infix_to_postfix('( ( A · B ) + ( C · D ) )'), end=", ")
+print(infix_to_postfix('( ( ( A + B ) · C ) - ( ( D - E ) · ( F + G ) ) )'), end=", ")
+print(infix_to_postfix('( 5 · ( 3 ^ ( 4 - 2 ) ) )'))
+
+def postfix_eval(postfix: str) -> int:
+    tokens = postfix.split()
+    operands = Stack()
+    operators = '+-/·'
+
+    for token in tokens:
+        if token not in operators:
+            operands.push(int(token))
+        else:
+            # if there are two operands, 
+            num1, num2 = operands.pop(), operands.pop()
+            if token == '+':
+                operands.push(num2 + num1)
+            elif token == '-':
+                operands.push(num2 - num1)
+            elif token == '/':
+                operands.push(num2 / num1)
+            elif token == '·':
+                operands.push(num2 * num1)
+    
+    return operands.pop()
+
+print(postfix_eval("7 8 + 3 2 + /"))
+
+'''3.10 Queues
+A queue adds to the front and deletes from the end. We call these operations enqueue and dequeue. A queue is FIFO, 
+so the first element added (in history) is the first one out. We only have a pointer to the front and the back, 
+making mid-queue operations expensive.
+'''
+
+class Queue:
+
+    def __init__(self):
+        self.items = []
+
+    def __repr__(self):
+        return f"Queue({self.items})"
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def enqueue(self, item):
+        self.items.append(item) # O(1)
+
+    def dequeue(self):
+        return self.items.pop(0) # O(n) !!!
