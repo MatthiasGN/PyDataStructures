@@ -1,4 +1,5 @@
-
+from typing import Any
+import random
 
 '''3 Data Types
 When we give an abstract data type (ADT) a physical implementation, we can now refer to that implementation as a data structure.
@@ -202,17 +203,38 @@ making mid-queue operations expensive.
 
 class Queue:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.items = []
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Queue({self.items})"
+    
+    def size(self) -> int:
+        return len(self.items)
 
-    def is_empty(self):
-        return len(self.items) == 0
+    def is_empty(self) -> bool:
+        return self.size() == 0
 
-    def enqueue(self, item):
-        self.items.append(item) # O(1)
+    def enqueue(self, item) -> None:
+        self.items.insert(0, item) # O(n) !
 
-    def dequeue(self):
-        return self.items.pop(0) # O(n) !!!
+    def dequeue(self) -> Any:
+        return self.items.pop() # O(1)
+
+
+def josephus(names: list, num: int) -> str:
+    names_left = Queue()
+    for name in names:
+        names_left.enqueue(name)
+
+    while names_left.size() > 1:
+        for i in range(num):
+            names_left.enqueue(names_left.dequeue())
+        names_left.dequeue()
+    
+    return names_left.dequeue()
+        
+print(josephus(["Bill", "David", "Susan", "Jane", "Kent", "Brad"], 7))
+
+
+'''3.15 Deques'''
