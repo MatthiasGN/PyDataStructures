@@ -219,7 +219,7 @@ class Queue:
         self.items.insert(0, item) # O(n) !
 
     def dequeue(self) -> Any:
-        return self.items.pop() # O(1)
+        return self.items.pop() # O(1). You can swap these by defining the front and rear the opposite way.
 
 
 def josephus(names: list, num: int) -> str:
@@ -237,4 +237,107 @@ def josephus(names: list, num: int) -> str:
 print(josephus(["Bill", "David", "Susan", "Jane", "Kent", "Brad"], 7))
 
 
-'''3.15 Deques'''
+'''3.15 Deques
+
+Double-ended queue. Can add and remove from both the front and the rear. Essentially combines the capabilities 
+of the stack and queue. Deques actually don't require either of FIFO or LIFO - it's up to the developer to stay
+consistent and keep track of which end is the front.
+'''
+
+# Actually super useful for shortening data structure class logic
+print("\n~~~Deques~~~\n")
+print(bool([]))
+print(bool([1]))
+
+
+class Deque:
+
+    def __init__(self) -> None:
+        self.items = []
+
+    def __repr__(self) -> str:
+        return f"Deque({self.items})"
+    
+    def is_empty(self) -> bool:
+        return not bool(self.items)
+    
+    def add_front(self, item) -> None:
+        self.items.append(item)
+
+    def remove_front(self) -> Any:
+        return self.items.pop() 
+    
+    def add_rear(self, item) -> None:
+        self.items.insert(0, item) # O(n)
+
+    def remove_rear(self) -> Any:
+        return self.items.pop(0) # O(n)
+
+    def size(self) -> int:
+        return len(self.items)
+
+
+def palindrome_checker(pal: str) -> bool:
+    pal_deq = Deque()
+    for char in pal:
+        pal_deq.add_front(char)
+
+    while not pal_deq.is_empty():
+        if pal_deq.size() == 1:
+            return True
+        if pal_deq.remove_front() != pal_deq.remove_rear():
+            return False
+
+print("Palindromes: ", end="")
+print(palindrome_checker("racecar"), end=", ")
+print(palindrome_checker("lsdkjfskf"), end=", ")
+print(palindrome_checker("radar"))
+
+
+'''3.19 Lists
+
+We start with a singly LinkedList. Recall that each item in the list is a Node with a value and the address of the next Node.
+We only have a head when referring to it - this makes appending items at the rear very expensive, but inserting at the head is very fast.
+
+
+~~~~ Getters & Setters ~~~~
+
+On a side note - doing some learning about getter and setter methods. Firstly, we refer to getter methods as accessors and 
+setter methods as mutators. Now, what's the point of even having these at all? Why not just change the object values directly using dot notation?
+
+Ok so the net is actually a bit divided on it. But it comes from Java, where if you didn't set up accessors and mutators when you first created
+a class, but eventually needed to, your entire codebase using that class would be broken/need to be updated. It's also used to keep your class
+implementation private - you can retrieve the values however you want to, which might require entering into a database or sending HTTP requests.
+
+In general, it's good practice to use getters and setters but it's actually not fully required for Python, because PRIVATE INSTANCE VARIABLES DO NOT
+EXIST IN PYTHON.
+
+However, there is a great Pythonic implementation of it using the PROPERTY decorator. 
+'''
+
+class Node:
+
+    def __init__(self, value) -> None:
+        self.value = value
+        self.next = None
+    
+    def __repr__(self) -> str:
+        return f"Node({self.value}, {self.next})"
+    
+    def set_value(self, value) -> None:
+        self.value = value
+
+    def set_next_node(self, next) -> None:
+        self.next = next
+    
+    def get_value(self) -> Any:
+        return self.value
+    
+    def get_next_node(self) -> Any:
+        return self.next
+    
+
+node = Node(5)
+print(node.value)
+node.value += 1
+print(node.value)

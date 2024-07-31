@@ -149,3 +149,96 @@ Finally we have u-strings. U-strings are unicode literals. Python3 strings are u
 probably don't need to worry about these unless you venture into Python2 for work. U-strings allow you to use
 non-ASCII characters (i.e. UTF-8) such as emojis, accented characters, etc.
 '''
+
+
+
+''' New Topic: Treating functions as objects, and decorators!
+
+Ok lol so now I've just learnt that you can treat functions as objects. WOW. As an example:
+'''
+
+def shout(text):
+    return text.upper()
+print(shout('Hello'))
+
+yell = shout
+print(yell('Hello'))
+# Both print the same thing!!
+
+# Ok, another cool one...:
+
+def whisper(text):
+    return text.lower()
+
+def greet(func):
+    print(func("Afternoon Punters and Dribblers!"))
+
+greet(whisper)
+greet(shout)
+
+# Honestly mindblowing stuff. This is essentially functional programming. This is such a different way of solving problems I never considered.
+# Next, returning functions from another function:
+
+def create_adder(x):
+    def adder(y):
+        return x+y
+    
+    return adder
+
+add_15 = create_adder(15)
+print(add_15(10))
+
+
+'''Now for the main culprit: Decorators!
+
+Decorators are essentially used to modify the behaviour of a function or class, more specifically only behaviour
+BEFORE or AFTER the function is called. Note that multiple functions can be called, allowing for very complex configurations.
+'''
+
+def hello_decorator(func):
+
+    def inner1():
+        print("Hello, this is before function execution")
+        func()
+        print("Hello, this is after program execution")
+
+    return inner1
+
+def inner_func():
+    print("This is inside the function!!")
+
+inner_func = hello_decorator(inner_func)
+inner_func()
+
+# Decorators are denoted using the @ symbol. So instead of the line,
+inner_func = hello_decorator(inner_func)
+# this can be replaced with:
+'''@hello_decorator
+def func(etc):
+    etc etc
+'''
+# So you essentially use the decorator on the line immediately before the function definition
+
+'''Pretty cool. What about if the inner function needs to return a value?'''
+
+def hello_decorator(func):
+    def inner1(*args, **kwargs):
+        
+        print("before Execution")
+        returned_value = func(*args, **kwargs)
+        print("after Execution")
+        
+        return returned_value
+    return inner1
+
+@hello_decorator
+def sum_two_numbers(a, b):
+    print("Inside the function")
+    return a + b
+
+print("Sum =", sum_two_numbers(1, 2))
+
+'''*args and **kwargs act as special parameters in Python. Args refers to all arguments,
+while kwargs refers to all keyword arguments.'''
+
+
