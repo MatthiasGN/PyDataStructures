@@ -239,6 +239,20 @@ def sum_two_numbers(a, b):
 print("Sum =", sum_two_numbers(1, 2))
 
 '''*args and **kwargs act as special parameters in Python. Args refers to all arguments,
-while kwargs refers to all keyword arguments.'''
+while kwargs refers to all keyword arguments. kwargs essentially means we're naming the variables
+as we pass it into the function. An example:
+'''
+def myFun(**kwargs):
+    for key, value in kwargs.items():
+        print(f"Key: {key}, Value: {value}")
+    
+myFun(first='Afternoon', mid='punters', last='n dribblers')
 
+'''You can also use *args and **kwargs as an argument to a function, if args contains the right amount of parameters.
+It's essentially like a pointer.'''
 
+def greet_poddy(arg1, arg2):
+    print(f"Arg1: {arg1}, Arg2: {arg2}")
+args = ("Afternoon", "Punters")
+# greet_poddy(args) # This will fail!
+greet_poddy(*args) # Whereas this passes

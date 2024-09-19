@@ -324,20 +324,74 @@ class Node:
     def __repr__(self) -> str:
         return f"Node({self.value}, {self.next})"
     
+    def get_value(self) -> Any:
+        return self.value
+
     def set_value(self, value) -> None:
         self.value = value
 
-    def set_next_node(self, next) -> None:
-        self.next = next
-    
-    def get_value(self) -> Any:
-        return self.value
-    
+    value = property(get_value, set_value)
+    # Syntax: property(getter, setter, deleter)
+
     def get_next_node(self) -> Any:
         return self.next
+
+    def set_next_node(self, next) -> None:
+        self.next = next
+
+    next = property(get_next_node, set_next_node)
+    
+
+'''
+In the case above, the property decorator isn't so important. But the reason it might be important is, say our set_value function was as follows:
+
+def set_value(self, value) -> None:
+    if value < 0:
+        self.value = value
+    elif value > 1000:
+        self.value = 1000
+    else:
+        self.value = value
+
+By setting the property with this more complex setter, we can now use that entire function by immediately calling Node.value = -69 in our code,
+which would automatically use the property decorator to redirect to the set_value function, effectively setting Node.value = 0.
+As you can see, it's especially important to use the property decorator when your accessors and mutators are more complex.
+'''
     
 
 node = Node(5)
 print(node.value)
 node.value += 1
 print(node.value)
+
+class UnorderedList:
+
+    def __init__(self, head: Node) -> None:
+        self.head = head
+
+    def __repr__(self) -> str:
+        return f"UnorderedList({self.head}, {self.head.value})"
+
+    def add(self, item: Node) -> None:
+        item.next = self.head
+        self.head = item
+
+    def remove(self, value: Node) -> None:
+        if self.head.value == value:
+            self.head = self.head.next
+            return
+        
+        curr = self.head
+        while curr.next is not None:
+            if curr.next.value == value:
+                curr.next = curr.next.next
+                return
+            curr = curr.next
+        raise Exception("Item cannot be removed; does not exist in List.")        
+
+    def append(self, item: Node) -> None:
+        curr = self.head
+        while curr.next is not None:
+            curr = curr.next
+        curr.next = item
+    
