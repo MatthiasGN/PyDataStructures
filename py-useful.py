@@ -256,3 +256,39 @@ def greet_poddy(arg1, arg2):
 args = ("Afternoon", "Punters")
 # greet_poddy(args) # This will fail!
 greet_poddy(*args) # Whereas this passes
+
+'''This is a completely new method of while logic I haven't encountered. While-else. It's best used when you have a break
+in your while loop, which should also skip the line(s) after the loop. Because the lines after 'else' are only executed if the
+condition fails normally. If the loop is broken out of, the handle_threshold_reached() will never be executed. '''
+value = 1
+threshold = 69
+while value < threshold:
+    if not value % 1 == 0:
+        # something went wrong, exit the loop; don't pass go, don't collect 200
+        break
+    value += 1
+else:
+    # value >= threshold; pass go, collect 200
+    print("Threshold has been reached, let's handle this")
+    # handle_threshold_reached()
+
+
+def gcd(a: int, b: int) -> int:
+    if a == 0:
+        return b
+    if b == 0:
+        return a
+    if a == b:
+        return a
+    
+    return gcd(max(a, b)-min(a,b), min(a,b))
+
+print("GCD")
+print(gcd(144, 132))
+
+
+def lcm(a: int, b: int) -> int:
+    return a*b // gcd(a, b)
+
+print("\nLCM")
+print(lcm(8,6))

@@ -330,7 +330,7 @@ class Node:
     def set_value(self, value) -> None:
         self.value = value
 
-    value = property(get_value, set_value)
+    # value = property(get_value, set_value)
     # Syntax: property(getter, setter, deleter)
 
     def get_next_node(self) -> Any:
@@ -339,7 +339,7 @@ class Node:
     def set_next_node(self, next) -> None:
         self.next = next
 
-    next = property(get_next_node, set_next_node)
+    # next = property(get_next_node, set_next_node)
     
 
 '''
@@ -347,7 +347,7 @@ In the case above, the property decorator isn't so important. But the reason it 
 
 def set_value(self, value) -> None:
     if value < 0:
-        self.value = value
+        self.value = 0
     elif value > 1000:
         self.value = 1000
     else:
@@ -366,32 +366,76 @@ print(node.value)
 
 class UnorderedList:
 
-    def __init__(self, head: Node) -> None:
-        self.head = head
+    def __init__(self) -> None:
+        self.head = None
 
     def __repr__(self) -> str:
         return f"UnorderedList({self.head}, {self.head.value})"
 
-    def add(self, item: Node) -> None:
-        item.next = self.head
-        self.head = item
+    def add(self, value) -> None:
+        new_head = Node(value)
+        new_head.set_next_node(self.head)
+        self.head = new_head
 
-    def remove(self, value: Node) -> None:
+    def remove(self, value) -> None:
         if self.head.value == value:
             self.head = self.head.next
             return
         
         curr = self.head
-        while curr.next is not None:
+        while curr.next:
             if curr.next.value == value:
                 curr.next = curr.next.next
                 return
             curr = curr.next
         raise Exception("Item cannot be removed; does not exist in List.")        
 
-    def append(self, item: Node) -> None:
+    def append(self, value) -> None:
         curr = self.head
-        while curr.next is not None:
+        while curr.next:
             curr = curr.next
-        curr.next = item
+        curr.next = Node(value)
     
+    def is_empty(self) -> bool:
+        return self.head == None
+    
+    def size(self) -> int:
+        ctr = 0
+        temp = self.head
+        while temp:
+            ctr += 1
+            temp = temp.next
+        return ctr
+
+    def search(self, value):
+        temp = self.head
+        while temp:
+            if temp.value == value:
+                return True
+            temp = temp.next
+        return False
+
+print("\n~~~Unordered List~~~")
+my_list = UnorderedList()
+
+for num in [31, 77, 17, 93, 26, 54]:
+    my_list.add(num)
+
+print(my_list.size())
+print(my_list.search(93))
+print(my_list.search(100))
+
+my_list.add(100)
+print(my_list.search(100))
+print(my_list.size())
+
+for num in [54, 31, 93]:
+    my_list.remove(num)
+    print(my_list.size())
+
+print(my_list.search(93))
+
+try:
+    my_list.remove(27)
+except Exception as e:
+    print(e)
