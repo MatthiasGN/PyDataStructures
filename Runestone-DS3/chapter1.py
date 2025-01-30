@@ -5,47 +5,97 @@ import random
 # never knew about sep, nor the dictionary formatting. Nice
 print("Yes", "hello", "is", "anyone", "there", sep="...")
 yep = {"age":23, "money":420.69123123}
-print("He is %(age)d years old and has %(money).2f dollars." % yep)
+print("He is %(age)d years old and has %(money).2f dollars." % yep) 
+# ^ Avoid using % with string formatting, it's more prone to errors, less readable, and less modern! Use f-strings instead.
 # interesting, a little unusable, but still...
 print(f"Age:{yep['age']:.>7}\n" + f"Money:{'$':.>4}{yep['money']:5.2f}")
 
 '''1.10 Control Structures'''
 # List comprehension. Really try to start using this in your code. Cleans things up a lot. But make sure it's readable.
 # Saves a LOT of efficiency too.
-sq_list = [x ** 2 for x in range(6) if x % 2 != 0]
+sq_list = [x ** 2 for x in range(11) if x % 2 != 0]
 print(sq_list)
 
 '''1.11 Exception Handling'''
 # Two types of errors in programs. We have syntax errors, which are caught by the compiler,
-# and we have runtime errors, which we call Exceptions. We an exception occurs, we say that an exception has been raised.
+# and we have runtime errors, which we call Exceptions. When an exception occurs, we say that an exception has been raised.
 # We can handle an exception that gets raised by using a try-except statement.
 # Try-except will NOT cause the program to exit, and will continue executing the statements following that block.
-# try:
-#     math.sqrt(-1)
-# except ValueError as err:
-#     print("Mate:", err)
-#     print(math.sqrt(abs(-1)))
-# print("Continuing on...")
+try:
+    for numba in [-3, 9]:
+        if numba < 0:
+            raise ValueError("Can't use a negative number")
+        else:
+            print(math.sqrt(numba))
+except ValueError as err:
+    print("Mate:", err)
+    print("Using absolute value instead.")
+    print(math.sqrt(abs(-1)))
+print("Continuing on...")
 
 '''1.12 Defining Functions'''
+
 # infinite monkey theorem. Goal: "afternoon punters and dribblers". 31 chars.
-# letters = 'abcdefghijklm nopqrstuvwxyz'
-# goal_str = 'afternoon punters and dribblers'
-# score = 0
-# monkey_str = '-------------------------------'
-# ctr = 0
-# while score != 31:
-#     rand_i = random.randint(0,30)
-#     if monkey_str[rand_i] != goal_str[rand_i]:
-#         monkey_str = monkey_str[:rand_i] + letters[random.randint(0,26)] + monkey_str[rand_i+1:]
-#         if monkey_str[rand_i] == goal_str[rand_i]:
+
+# def random_string(str_len: int):
+#     random_str = ""
+#     letters = "abcedfghijklmnopqrstuvwxyz "
+#     for i in range(str_len):
+#         random_str += letters[random.randint(0,26)]
+#     return random_str
+
+# def random_score(goal_string, random_string):
+#     score = 0
+#     for i, char in enumerate(random_string):
+#         if char == goal_string[i]:
 #             score += 1
     
-#     ctr += 1
-#     if ctr % 100 == 0:
-#         print(score, monkey_str)
+#     return score / len(goal_string)
 
-# print(ctr, score, monkey_str)
+# def infinite_monkey(goal_string):
+#     best_score = 0
+#     best_str = ""
+#     for i in range(5000000):
+#         random_str = random_string(len(goal_str))
+#         score = random_score(random_str, goal_string)
+
+#         if score >= best_score:
+#             best_score = score
+#             best_str = random_str
+
+#         if i % 50000 == 0:
+#             print("%s %.0f%%" % (best_str, best_score*100))
+
+# goal_str = "what is that what was that"
+# infinite_monkey(goal_str)
+
+# def hillclimb(goal_string, curr_string):
+#     letters = "abcedfghijklmnopqrstuvwxyz "
+#     new_string = ""
+#     for i in range(len(curr_string)):
+#         if curr_string[i] == goal_string[i]:
+#             new_string += curr_string[i]
+#         else:
+#             new_string += letters[random.randint(0,26)]
+#     return new_string
+
+# def infinite_monkey_hillclimb(goal_string):
+#     best_score = 0
+#     curr_str = random_string(len(goal_string))
+#     for i in range(100000):
+#         curr_str = hillclimb(goal_string, curr_str)
+#         score = random_score(curr_str, goal_string)
+
+#         if score > best_score:
+#             best_score = score
+#             print(f"{curr_str} {best_score*100:.0f}%%")
+
+#         if score == 1:
+#             print(f"{i} iterations.")
+#             return
+
+# infinite_monkey_hillclimb(goal_str)
+
 
 '''1.13 Defining Classes'''
 '''A couple things to learn here. For functions more generally, we've learnt that parameters are not inherently typed in Python.
@@ -58,7 +108,7 @@ it doesn't have to do as much type checking. There are also type hints now too: 
 ''' You should aim to always use type hints. They are NOT enforced, but may cause errors with other libraries. Any time you have
 a complex parameter type, just set it to Any. Type hints essentially act as good documentation for when you come back to your code. 
 Use them always. We can also define the return type of a function with the arrow -> shorthand. Return typing also isn't enforced 
-by the compiler and is again used for documentation rather than compilation.
+by the compiler and is again used for documentation rather than compilation. Think of it as good commenting / clean code practices.
 The reason you weren't up to date with this is because it was only introduced in Python 3.5.
 '''
 
@@ -96,11 +146,11 @@ class Fraction:
     # __str__ is to be readable for users.
 
     def __repr__(self):
-        return "Fraction(%d, %d)" % (self.num, self.den)
+        return f"Fraction({self.num}, {self.num})"
 
     def __str__(self):
         # Note how %d casts to an int
-        return "%d/%d" % (self.num, self.den)
+        return f"{self.num}/{self.num}"
     
     def __add__(self, fraction2):
         num = self.num * fraction2.den + fraction2.num * self.den
@@ -161,16 +211,17 @@ print(fraction1 <= Fraction(5,9))
 print(3 + fraction1)
 
 '''
-Since I've just used it above, let's learn string formatting. The different kinds are as follows:
-%r - raw data, %d - integer, %f - float, %s - string, %x - hexadecimal %o - octal.
+Since I've just used it above, let's learn string formatting. We want to use f-strings, because they're more modern,
+readable and safer than using % or .format(). The different kinds are as follows:
+!r - raw data, :d - integer, :.2f - float, :#x - hexadecimal, :#o - octal.
 Using these actually typecasts the variable before printing.
 %r is useful if you want to avoid errors and just understand what's going on. It's actually the same
 as just printing the object directly, %r just allows you to interpolate it into a string.
 When printing a class with %s, it defaults to the __str__ function.
 '''
 var = 69
-print("Raw: %r, int: %d, float: %.2f, str: %s, hex: %x, oct: %o" % (var, var, var, var, var, var))
-print("Raw: %r, str: %s" % (fraction1, fraction1))
+print(f"Raw: {var!r}, int: {var:d}, float: {var:.2f}, str: {var}, hex: {var:#x}, oct: {var:#o}")
+print(f"Raw: {fraction1!r}, {fraction1}")
 
 '''
 Really good stuff above on classes. In particular the fact that you can redefine all the builtin methods
