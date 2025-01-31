@@ -120,4 +120,6 @@ nba = {"Damian Lillard":"Portland Trailblazers"}
 print(dir(nba))
 
 """Ask Chat how hash table collisions are handled in Python. Very interesting and relevant stuff.
-It's essentially handled using open addressing and linear probing."""
+It's essentially handled using open addressing and linear probing.
+Do you know what those are?
+"""
