@@ -87,8 +87,8 @@ the rest of the list down/up. That includes inserting/deleting the first value -
 has to be moved up. Inserting/deleting towards the end of a list is less resource-heavy.
 
 Other thing to note is that lists are pretty much Python's version of arrays, but not exactly. Python's
-lists are so effective because they are very flexible and can hold completely different types of data.
-However, because of this they use a fair bit of space.
+lists are so effective because they are very flexible and can hold completely different types of data, 
+since they're essentially lists of references. However, because of this they use a fair bit of space.
 
 The default array library offers a less space-intensive solution through array.array, but this can only
 hold the same data type at each index. 
@@ -101,7 +101,7 @@ a = [1, 2, 3]
 a[1] = 5
 print(a)
 # Reassigning an element in the middle of a list in Python is O(1). I actually think this is regardless of what you reassign it to.
-# E.g. you could reassign a[1] = "New string" and it'd still be O(1). Yeah. Because Python lists are actually just lists of pointers.
+# E.g. you could reassign a[1] = "New string" and it'd still be O(1). Yeah. Because Python lists are actually just lists of references.
 # So assigning a[1] actually just puts a new pointer into the memory address at a[1], which points to the address of the string.
 
 '''2.7 Dictionaries
@@ -114,3 +114,10 @@ contains: O(1)
 These are ON AVERAGE. There are rare cases where these degenerate to O(n) performance. More on that later.
 
 '''
+
+# Super useful command for if you're struggling to find a method during a technical interview and you can run the program unlimited times.
+nba = {"Damian Lillard":"Portland Trailblazers"}
+print(dir(nba))
+
+"""Ask Chat how hash table collisions are handled in Python. Very interesting and relevant stuff.
+It's essentially handled using open addressing and linear probing."""

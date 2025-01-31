@@ -279,13 +279,13 @@ class Foo:
 
 '''
 Last thing to note with classes. A custom class constructor should always invoke the constructor
-of its parent before continuing on with its own data and behaviour. i.e. super.__init__()
+of its parent before continuing on with its own data and behaviour. i.e. super().__init__()
 
 
 1.15 Key Terms
 
 Abstract Data Type (ADT): essentially where behaviour is defined but not implementation. 
-Examples include List, Queue, Set, Tree, etc.
+Examples include classes such as List, Queue, Set, Tree, etc.
 Note that an ADT is not necessarily the opposite of a Primitive data type; arrays are examples of
 non-primitive, non-abstract data types.
 
