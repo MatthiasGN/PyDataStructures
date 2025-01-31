@@ -3,7 +3,6 @@ import random
 # Practice as a Python refresher for classes.
 
 class PlayingCard:
-
     card_ranks = ['2','3','4','5','6','7','8','9','10','J','Q','K','A','Joker']
     card_suits = ['H','D','C','S']
     joker_colours = ['R','B']
@@ -11,32 +10,30 @@ class PlayingCard:
     def __init__(self, rank, suit):
         self.rank = rank
         self.suit = suit
-        return
 
     def __repr__(self):
         return f"{self.rank}{self.suit}"
     
-    def __gt__(self, card2):
-        return self.card_ranks.index(self.rank) > self.card_ranks.index(card2.rank)
-    
+    def __eq__(self, card2):
+        return self.card_ranks.index(self.rank) == self.card_ranks.index(card2.rank)
+
     def __lt__(self, card2):
         return self.card_ranks.index(self.rank) < self.card_ranks.index(card2.rank)
     
-    def __eq__(self, card2):
-        return self.card_ranks.index(self.rank) == self.card_ranks.index(card2.rank)
+    def __gt__(self, card2):
+        return self.card_ranks.index(self.rank) > self.card_ranks.index(card2.rank)
     
 
 class DeckOfCards:
-
     def __init__(self):
         self.deck = []
         for rank in PlayingCard.card_ranks:
-            if rank == "Joker":
-                for colour in PlayingCard.joker_colours:
-                    self.deck.append(PlayingCard(rank, colour))
-            else:
+            if rank != "Joker":
                 for suit in PlayingCard.card_suits:
                     self.deck.append(PlayingCard(rank, suit))
+            else:
+                for colour in PlayingCard.joker_colours:
+                    self.deck.append(PlayingCard(rank, colour))
 
     def __repr__(self):
         return f"Deck{self.deck}"
@@ -45,60 +42,55 @@ class DeckOfCards:
         random.shuffle(self.deck)
 
     def draw_card(self) -> PlayingCard:
-        return self.deck.pop()
+        return self.deck.pop() if self.deck else None
     
     def __len__(self):
         return len(self.deck)
 
 
 class HandOfCards:
-
     def __init__(self, hand=None):
-        if hand == None:
-            self.hand = []
-        else:
-            self.hand = hand
+        self.hand = hand or []
 
     def __repr__(self):
         return f"{self.hand}"
 
     def __len__(self):
         return len(self.hand)
+
+    def set_hand(self, hand):
+        self.hand = hand
     
     def add_card(self, card: PlayingCard):
         self.hand.append(card)
 
     def random_card(self) -> PlayingCard:
-        return random.choice(self.hand)
+        return random.choice(self.hand) if self.hand else None
 
     def play_card(self, card: PlayingCard):
-        return self.hand.remove(card)
+        if card in self.hand:
+            self.hand.remove(card)
+            return card
+        return None
 
 
 class CardGame:
-
     def __init__(self, num_players=2):
         self.deck = DeckOfCards()
-        self.hands = []
-        for i in range(num_players):
-            self.hands.append(HandOfCards())
+        self.hands = [HandOfCards() for _ in range(num_players)] 
+    # Use _ to make it clear that the variable is intentionally unused.
 
     def __repr__(self):
         return f"{self.deck}\n{self.hands}"
 
 
 class Bataille(CardGame):
-
     def __init__(self):
         super().__init__(2)
         self.deck.shuffle()
-
-        hand_ctr = 0
-        while len(self.deck) > 0:
-            self.hands[hand_ctr].add_card(self.deck.draw_card())
-            hand_ctr += 1
-            if hand_ctr == 2:
-                hand_ctr = 0
+        self.hands[0].set_hand(self.deck.deck[:len(self.deck)//2])
+        self.hands[1].set_hand(self.deck.deck[len(self.deck)//2:])
+        self.deck.deck = []
 
     def __repr__(self):
         repr = f"{self.deck}"
@@ -153,7 +145,6 @@ class Bataille(CardGame):
                 print(f"{card} | ? | ", end="")
             print(f"{play[-1]}")
             
-
             if play[-2] > play[-1]:
                 round_winner = 0
 
@@ -167,7 +158,14 @@ class Bataille(CardGame):
         print(f"Player {round_winner+1} collects the cards.\n")
 
     def play_interactive(self):
-        while input("Press Enter to play the next round.") == "":
+        while True:
+            inp = input("Press Enter to play the next round.")
+            if inp == "d":
+                print(self)
+                continue
+            elif inp != "":
+                break
+
             if len(self.hands[0]) == 0:
                 print("Player 2 wins!")
                 print(bataille)
@@ -178,19 +176,6 @@ class Bataille(CardGame):
                 break
             self.play_round()
                 
-
-        
-        
-         
 bataille = Bataille()
 print(bataille)
-print()
-
 bataille.play_interactive()
-
-
-
-# deck = DeckOfCards()
-# print(deck)
-# deck.shuffle()
-# print(deck)
