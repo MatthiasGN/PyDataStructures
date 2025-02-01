@@ -122,4 +122,11 @@ print(dir(nba))
 """Ask Chat how hash table collisions are handled in Python. Very interesting and relevant stuff.
 It's essentially handled using open addressing and linear probing.
 Do you know what those are?
+
+
+Of note: Python doesn't have native interfaces or structs!
+This is because they are both less useful in a dynamically typed language,
+since they create specific type structures and contracts for other objects to adhere to.
+Interfaces / structs are much better suited to statically typed languages like C or Java
+
 """
