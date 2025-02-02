@@ -1,441 +1,339 @@
 from typing import Any
 import random
 
-'''3 Data Types
-When we give an abstract data type (ADT) a physical implementation, we can now refer to that implementation as a data structure.
+'''3.2 Linear Data Structures
 
-What different types of data structures exist in Python?
+We'll start with lists, stacks, queues and deques.
+A linear data structure is defined by how items are ordered according to how they are added or removed.
+They also generally have a front and a rear (head and a tail).
 
-Primitive:
-- Characters
-- Integers
-- Floats
-- Booleans
-
-Non-Primitive (built-ins):
-- Lists
-- Dictionaries
-- Sets
-- Tuples
-
-Non-Primitive (user-defined):
-- Stacks
-- Queues
-- Deques
-- LinkedLists
-- Trees
-- etc
-
+Some structures may only allow addition to the tail, or some may only allow removal from the tail.
 
 3.3 Stacks
 
-Our first linear data type. Addition and removal of new items is at the same end; the top of the stack.
-We call this last in, first out (LIFO). The thing to remember with FIFO and LIFO is that the first part
-of the anagram refers to when the item that is being removed was added to the data structure. While the second
-part of the anagram refers to the position of the item being removed. So FIFO would mean the first item to be
-added to the data structure is removed from the first position.
+Stacks are a linear data structure where addition and removal only happens at ONE end.
+Typically this will be the tail, or the 'top'.
 
-Stacks are pretty easy to think about: just consider a stack of books.
+Think of it like a stack of books.
+In Python, we implement the addition/removal end as the TAIL of a List.
 
-A useful idea to consider is that stacks essentially reverse the order of insertion to the order of removal.
-I.e. if you looped through a list and added each item into a stack, the stack automatically has reversed the order
-of that list.
+E.g. stack = [1, 2, 3], 3 could be popped from the tail or an element could be pushed on top of it.
+But accessing the element at the bottom of the stack, 1, is costly and difficult.
 
-A good example is the idea of your current tab history. Your current webpage is on the top of the stack, but you
-can hit back as many times as you want to move in reverse order through the webpages.
+Stacks are last-in first-out, or LIFO. This means the item that was last added in is the first to be popped out.
 
-Stacks are ordered LIFO.
+One of the most fundamentally useful ideas behind a stack is the ordering. For example, you add books to a stack in some order.
+Then if you pop those books one by one off the stack, the order you get is exactly the REVERSE of the order you added them in.
+More formally, the order of insertion is the reverse of the order of removal.
+This idea is fundamental to many uses of the Stack in DS&A.
 
-The really important thing here is to note how it's implemented in Python. The element at the bottom of the stack is
-actually the first element in the Python List. This makes it much more efficient to push and pop items from the top of
-the stack (i.e. the end of the list, which is less memory intensive).
+To achieve this functionality with a list, you'd have to use two/multiple lists, i.e. extra space, and probably lose time efficiency.
+
+A real-life example of this is your web page history within your current tab. You can hit the back button and forward button
+to go back and forth down the stack. Another simple example is Ctrl+Z and Ctrl+Shift+Z for undo and redo.
+
+Let's try to implement a Stack.
 '''
 
 class Stack:
-
     def __init__(self):
-        self.ls = []
+        self.items = []
 
     def __repr__(self):
-        return f"Stack({self.ls})"
+        return f"Stack{self.items}"
 
-    def push(self, obj: any):
-        self.ls.append(obj)
+    def push(self, item):
+        self.items.append(item)
 
     def pop(self):
-        return self.ls.pop()
-
-    def is_empty(self):
-        return len(self.ls) < 1
-
+        return self.items.pop() if self.items else None
+    
     def peek(self):
-        if self.is_empty():
-            raise IndexError("Stack is empty")
-        return self.ls[-1]
+        return self.items[-1] if self.items else None
+    
+    def is_empty(self):
+        return self.peek() is None
     
     def size(self):
-        return len(self.ls)
+        return len(self.items)
     
-# Four principles of OOP:
-# Encapsulation - both data and methods are contained within the same object. I.e. getters and setters
-# Inheritance - classes can inherit variables and methods from parent classes
-# Polymorphism - classes can be treated as instances of their parent classes. E.g. Dog can be input to a function that only accepts Animal
-# Abstraction - complex ideas can be represented in a number of different, simpler ways. E.g. a stack, an ADT, can be implemented in Python as a data structure in multiple ways.
-
+    def __len__(self):
+        return len(self.items)
+    
 s = Stack()
-s.push(1)
-s.peek()
-print(s)
+print(s.is_empty())
+print(s.push(4))
+print(s.push('dog'))
+print(s.peek())
+print(s.push(True))
+print(s.size())
+print(s.is_empty())
+print(s.push(8.4))
 print(s.pop())
-s.push(1)
-s.push(2)
-s.push(3)
-print(s)
+print(s.pop())
+print(s.size())
 
 
-'''3.6 Balanced Parentheses
-Balancing parentheses is almost always achieved through Stacks.
-'''
+def balance_checker(par_str):
+    open_pars = ["(","{","["]
+    closed_pars = [")","}","]"]
+    par_stacks = [Stack()]*3
+    # Inefficient with space. You don't need the 3 stacks. But time complexity is good.
 
-def par_checker(pars):
-    s = Stack()
-    for par in pars:
-        if par in '({[':
-            s.push(par)
-        elif not s.is_empty():
-            if abs(ord(par)-ord(s.peek())) < 3:
-                s.pop()
-            else:
-                return False
-        else:
-            return False
-        
-    return s.is_empty()
-
-print(par_checker("((()))"), end=", ")  # expected True
-print(par_checker("((()()))"), end=", ")  # expected True
-print(par_checker("(()"), end=", ")  # expected False
-print(par_checker(")("), end=", ")  # expected False
-print(par_checker('{({([][])}())}'), end=", ")
-print(par_checker('[{()]'))
-
-'''A really interesting way to check for equality between two alphabet-like structures. Use index to match by position!'''
-def matches(sym_left, sym_right):
-    all_lefts = "([{"
-    all_rights = ")]}"
-    return all_lefts.index(sym_left) == all_rights.index(sym_right)
-
-
-'''3.8 Decimal to Binary
-Something you may be noticing is that Stacks are a great choice of data structure whenever a REVERSAL of order is required in the algorithm.
-'''
-
-def base_converter(num: int, base: int) -> str:
-    digits = '0123456789ABCDEF'
-
-    s = Stack()
-    while num > 0:
-        s.push(num % base)
-        num = num // base
+    for char in par_str:
+        for i in range(3):
+            if char == open_pars[i]:
+                par_stacks[i].push(char)
+            elif char == closed_pars[i]:
+                if par_stacks[i].is_empty():
+                    return False
+                par_stacks[i].pop()
     
-    binary = ''
-    while not s.is_empty():
-        binary += digits[s.pop()]
+    for par_check in par_stacks:
+        if not par_check.is_empty():
+            return False
+    return True
+
+print(balance_checker('(([{[[({({{adas(sd([{[adf({[{[afgdsg[{({})s]dfgs)]sdfg}sdfg)s]dfg}sdf)gsd}fg}sg}])]})}]]})])'))
+print(balance_checker('([(([{{({[([{(([[[[(([({(]]))]])])})]}))}}])})]]))'))
+print(balance_checker('{([[({{(({(({[(((({{((([[}}])})))}}})])])))))}])])'))
+print(balance_checker('5]]0fJ{dv))6}]}}{][x][sh({}{[3}(({{]]8{{[{m)30{U)}'))
+print(balance_checker('3[[}[]Ai{(14}6{J7X{T]{)(6b}(T2)})]{)){5]{u6][4(j)}'))
+print()
+
+def decimal_base_converter(num, new_base):
+    digits = "0123456789ABCDEF"
+    rem_stack = Stack()
+    while num > 0:
+        rem_stack.push(digits[num % new_base])
+        num //= new_base
+    
+    binary = ""
+    while not rem_stack.is_empty():
+        binary += rem_stack.pop()
     return binary
 
-print(base_converter(233, 2), end=", ")
-print(base_converter(233, 3), end=", ")
-print(base_converter(233, 8), end=", ")
-print(base_converter(233, 16))
+print(decimal_base_converter(233, 2))
+print(decimal_base_converter(42, 2))
+print(decimal_base_converter(31, 2))
+
+print(decimal_base_converter(233, 8))
+print(decimal_base_converter(233, 16))
 
 
-def infix_to_postfix(infix: str) -> str:
+
+def infix_to_postfix(infix_str):
+    operators = ["(","+","-","*","/","^"]
+
     op_stack = Stack()
-    operators = '+-/·^()'
-    tokens = infix.split()
-    postfix = ''
+    output = []
+    for tok in infix_str:
+        if tok.isalnum():
+            output.append(tok)
+        elif tok == "(":
+            op_stack.push(tok)
+        elif tok == ")":
+            op = op_stack.pop()
+            while op != "(":
+                output.append(op)
+                op = op_stack.pop()
+        elif tok in operators:
+            while not op_stack.is_empty() and operators.index(op_stack.peek()) >= operators.index(tok):
+                output.append(op_stack.pop())
+            op_stack.push(tok)
 
-    for token in tokens:
-        if token in operators:
-            if token == ')':
-                postfix += op_stack.pop()
-            elif token != '(':
-                op_stack.push(token)
-        else:
-            postfix += token
-    
-    return postfix
+    while not op_stack.is_empty():
+        output.append(op_stack.pop())
 
-print(infix_to_postfix('( ( A + B ) · C )'), end=", ")
-print(infix_to_postfix('( ( A · B ) + ( C · D ) )'), end=", ")
-print(infix_to_postfix('( ( ( A + B ) · C ) - ( ( D - E ) · ( F + G ) ) )'), end=", ")
-print(infix_to_postfix('( 5 · ( 3 ^ ( 4 - 2 ) ) )'))
+    return "".join(output)
 
-def postfix_eval(postfix: str) -> int:
-    tokens = postfix.split()
+print(infix_to_postfix("A * B + C * D"))
+print(infix_to_postfix("( A + B ) * C - ( D - E ) * ( F + G )"))
+print(infix_to_postfix("A+B-C-D-E*F+G"))
+print(infix_to_postfix("5 * 3 ^ (4 - 2)"))
+
+def do_math(op, op1, op2):
+    if op == "*":
+        return op1 * op2
+    elif op == "/":
+        return op1 / op2
+    elif op == "+":
+        return op1 + op2
+    else:
+        return op1 - op2
+
+def postfix_eval(postfix):
     operands = Stack()
-    operators = '+-/·'
-
-    for token in tokens:
-        if token not in operators:
-            operands.push(int(token))
-        else:
-            # if there are two operands, 
-            num1, num2 = operands.pop(), operands.pop()
-            if token == '+':
-                operands.push(num2 + num1)
-            elif token == '-':
-                operands.push(num2 - num1)
-            elif token == '/':
-                operands.push(num2 / num1)
-            elif token == '·':
-                operands.push(num2 * num1)
+    for tok in postfix:
+        if tok.isalnum():
+            operands.push(int(tok))
+        elif tok in ["+","-","*","/"]:
+            op1, op2 = operands.pop(), operands.pop()
+            result = do_math(tok, op2, op1)
+            operands.push(result)
     
     return operands.pop()
 
 print(postfix_eval("7 8 + 3 2 + /"))
 
-'''3.10 Queues
-A queue adds to the front and deletes from the end. We call these operations enqueue and dequeue. A queue is FIFO, 
-so the first element added (in history) is the first one out. We only have a pointer to the front and the back, 
-making mid-queue operations expensive.
-'''
+"""
+Essentially: any time you need to reverse the order of the items in your algorithm,
+try using a Stack.
+"""
+
+
+"""
+Next up: Queues!
+
+3.10 Queues
+
+A queue is a linear data structure where addition and removal occur at opposite ends.
+The ends are commonly called the FRONT and the END, or the head and the tail.
+
+Think of the queue abstractly as if the rear is on the left and the front is on the right.
+I.e. you're looking at the tail - that's the only place you can enter the queue from.
+Think of it just like any normal queue, e.g. queuing up to order a Boost.
+
+A real-life applications of queues is documents queued up for printing. 2 computers can queue
+up multiple documents to the end of the queue, and the document at the front/head of the queue
+gets actioned. Queues are also used to register key types when we type on the keyboard, and
+for example the system is busy loading up a new tab on Chrome. The key presses get added to a
+Queue-like buffer that can eventually be actioned and displayed on the screen.
+
+This idea of 'scheduling' will often use queues, when we want to maintain the same order.
+
+Queues in Python are implemented with a list, where index 0 is the rear and index -1 is the front.
+E.g. [3, 2, 1] is how 1, 2, 3 would be enqueued. You can dequeue 1 easily, but 3 is costly and inefficient.
+
+Note how unlike stacks, the order of removal is THE SAME as the order of insertion. Great for standard needs.
+
+Stacks are used for DFS!
+
+"""
 
 class Queue:
-
-    def __init__(self) -> None:
+    def __init__(self):
         self.items = []
 
-    def __repr__(self) -> str:
-        return f"Queue({self.items})"
+    def __repr__(self):
+        return f"Queue{self.items}"
     
-    def size(self) -> int:
+    def __len__(self):
         return len(self.items)
-
-    def is_empty(self) -> bool:
-        return self.size() == 0
-
-    def enqueue(self, item) -> None:
-        self.items.insert(0, item) # O(n) !
-
-    def dequeue(self) -> Any:
-        return self.items.pop() # O(1). You can swap these by defining the front and rear the opposite way.
-
-
-def josephus(names: list, num: int) -> str:
-    names_left = Queue()
-    for name in names:
-        names_left.enqueue(name)
-
-    while names_left.size() > 1:
-        for i in range(num):
-            names_left.enqueue(names_left.dequeue())
-        names_left.dequeue()
     
-    return names_left.dequeue()
-        
-print(josephus(["Bill", "David", "Susan", "Jane", "Kent", "Brad"], 7))
+    def size(self):
+        return len(self)
+    
+    def is_empty(self):
+        return True if len(self) == 0 else False
+    
+    def enqueue(self, item):
+        self.items.insert(0, item)
+    
+    def dequeue(self):
+        if self.is_empty():
+            return None
+        return self.items.pop()
 
+    
+print("\n~~Queues~~")
+    
+q = Queue()
+q.enqueue(4)
+q.enqueue("dog")
+q.enqueue(True)
+print(q.size())
+print(q.is_empty())
+print(q.enqueue(8.4))
+print(q.dequeue())
+print(q.dequeue())
+print(q.size())
 
-'''3.15 Deques
+"""
+enqueue() : O(n)
+dequeue() : O(1)
+search/insert : O(n)
 
-Double-ended queue. Can add and remove from both the front and the rear. Essentially combines the capabilities 
-of the stack and queue. Deques actually don't require either of FIFO or LIFO - it's up to the developer to stay
-consistent and keep track of which end is the front.
-'''
+Queues aren't actually that efficient!
+"""
 
-# Actually super useful for shortening data structure class logic
-print("\n~~~Deques~~~\n")
-print(bool([]))
-print(bool([1]))
+def josephus(n, k):
+    romans = Queue()
+    for x in range(1,n+1):
+        romans.enqueue(x)
+    ctr = 1
+    while romans.size() > 2:
+        roman = romans.dequeue()
+        if ctr % k != 0:
+            romans.enqueue(roman)
+        ctr += 1
+    
+    print(f"And the winning romans are...{romans.dequeue()} and {romans.dequeue()}!")
 
+josephus(41, 3)
+
+"""
+
+Essentially, think of queues as simply real-life queues. Use them when you need to queue
+things up! Practical examples are task scheduling, print scheduling, and video streaming.
+
+BFS uses Queues!
+
+"""
+
+"""
+Next up: Deques!
+
+3.15: Deques
+
+Pronounced 'deck'. Decks (deques) are double-ended queues, so essentially gain the functionality
+of both stacks and queues. They're interesting because you can choose which end should be
+the front and the rear (which must be kept consistent) in order to maximise efficiency.
+
+One of the ends will be O(1) to add/remove from, and the other end will be O(n).
+Like queues, the tail end is on the left of the list, e.g. for [1, 2, 3], 1 as at the tail.
+
+In that sense
+
+"""
 
 class Deque:
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.items = []
 
-    def __repr__(self) -> str:
-        return f"Deque({self.items})"
-    
-    def is_empty(self) -> bool:
-        return not bool(self.items)
-    
-    def add_front(self, item) -> None:
+    def __repr__(self):
+        return f"Deque{self.items}"
+
+    def add_front(self, item):
         self.items.append(item)
 
-    def remove_front(self) -> Any:
-        return self.items.pop() 
+    def add_rear(self, item):
+        self.items.insert(0, item)
+
+    def remove_front(self):
+        return self.items.pop() if self.items else None
     
-    def add_rear(self, item) -> None:
-        self.items.insert(0, item) # O(n)
-
-    def remove_rear(self) -> Any:
-        return self.items.pop(0) # O(n)
-
-    def size(self) -> int:
+    def remove_rear(self):
+        return self.items.pop(0) if self.items else None
+    
+    def is_empty(self):
+        return not bool(self.items)
+    
+    def size(self):
         return len(self.items)
-
-
-def palindrome_checker(pal: str) -> bool:
-    pal_deq = Deque()
-    for char in pal:
-        pal_deq.add_front(char)
-
-    while not pal_deq.is_empty():
-        if pal_deq.size() == 1:
-            return True
-        if pal_deq.remove_front() != pal_deq.remove_rear():
-            return False
-
-print("Palindromes: ", end="")
-print(palindrome_checker("racecar"), end=", ")
-print(palindrome_checker("lsdkjfskf"), end=", ")
-print(palindrome_checker("radar"))
-
-
-'''3.19 Lists
-
-We start with a singly LinkedList. Recall that each item in the list is a Node with a value and the address of the next Node.
-We only have a head when referring to it - this makes appending items at the rear very expensive, but inserting at the head is very fast.
-
-
-~~~~ Getters & Setters ~~~~
-
-On a side note - doing some learning about getter and setter methods. Firstly, we refer to getter methods as accessors and 
-setter methods as mutators. Now, what's the point of even having these at all? Why not just change the object values directly using dot notation?
-
-Ok so the net is actually a bit divided on it. But it comes from Java, where if you didn't set up accessors and mutators when you first created
-a class, but eventually needed to, your entire codebase using that class would be broken/need to be updated. It's also used to keep your class
-implementation private - you can retrieve the values however you want to, which might require entering into a database or sending HTTP requests.
-
-In general, it's good practice to use getters and setters but it's actually not fully required for Python, because PRIVATE INSTANCE VARIABLES DO NOT
-EXIST IN PYTHON.
-
-However, there is a great Pythonic implementation of it using the PROPERTY decorator. 
-'''
-
-class Node:
-
-    def __init__(self, value) -> None:
-        self.value = value
-        self.next = None
     
-    def __repr__(self) -> str:
-        return f"Node({self.value}, {self.next})"
-    
-    def get_value(self) -> Any:
-        return self.value
+print("\n~~~Deques~~~")
 
-    def set_value(self, value) -> None:
-        self.value = value
-
-    # value = property(get_value, set_value)
-    # Syntax: property(getter, setter, deleter)
-
-    def get_next_node(self) -> Any:
-        return self.next
-
-    def set_next_node(self, next) -> None:
-        self.next = next
-
-    # next = property(get_next_node, set_next_node)
-    
-
-'''
-In the case above, the property decorator isn't so important. But the reason it might be important is, say our set_value function was as follows:
-
-def set_value(self, value) -> None:
-    if value < 0:
-        self.value = 0
-    elif value > 1000:
-        self.value = 1000
-    else:
-        self.value = value
-
-By setting the property with this more complex setter, we can now use that entire function by immediately calling Node.value = -69 in our code,
-which would automatically use the property decorator to redirect to the set_value function, effectively setting Node.value = 0.
-As you can see, it's especially important to use the property decorator when your accessors and mutators are more complex.
-'''
-    
-
-node = Node(5)
-print(node.value)
-node.value += 1
-print(node.value)
-
-class UnorderedList:
-
-    def __init__(self) -> None:
-        self.head = None
-
-    def __repr__(self) -> str:
-        return f"UnorderedList({self.head}, {self.head.value})"
-
-    def add(self, value) -> None:
-        new_head = Node(value)
-        new_head.set_next_node(self.head)
-        self.head = new_head
-
-    def remove(self, value) -> None:
-        if self.head.value == value:
-            self.head = self.head.next
-            return
-        
-        curr = self.head
-        while curr.next:
-            if curr.next.value == value:
-                curr.next = curr.next.next
-                return
-            curr = curr.next
-        raise Exception("Item cannot be removed; does not exist in List.")        
-
-    def append(self, value) -> None:
-        curr = self.head
-        while curr.next:
-            curr = curr.next
-        curr.next = Node(value)
-    
-    def is_empty(self) -> bool:
-        return self.head == None
-    
-    def size(self) -> int:
-        ctr = 0
-        temp = self.head
-        while temp:
-            ctr += 1
-            temp = temp.next
-        return ctr
-
-    def search(self, value):
-        temp = self.head
-        while temp:
-            if temp.value == value:
-                return True
-            temp = temp.next
-        return False
-
-print("\n~~~Unordered List~~~")
-my_list = UnorderedList()
-
-for num in [31, 77, 17, 93, 26, 54]:
-    my_list.add(num)
-
-print(my_list.size())
-print(my_list.search(93))
-print(my_list.search(100))
-
-my_list.add(100)
-print(my_list.search(100))
-print(my_list.size())
-
-for num in [54, 31, 93]:
-    my_list.remove(num)
-    print(my_list.size())
-
-print(my_list.search(93))
-
-try:
-    my_list.remove(27)
-except Exception as e:
-    print(e)
+d = Deque()
+print(d.is_empty())
+d.add_rear(4)
+d.add_rear("dog")
+d.add_front("cat")
+d.add_front(True)
+print(d)
+print(d.size())
+print(d.is_empty())
+d.add_rear(8.4)
+print(d.remove_rear())
+print(d.remove_front())
