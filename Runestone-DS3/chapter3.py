@@ -282,19 +282,17 @@ BFS uses Queues!
 """
 
 """
-Next up: Deques!
-
 3.15: Deques
 
 Pronounced 'deck'. Decks (deques) are double-ended queues, so essentially gain the functionality
-of both stacks and queues. They're interesting because you can choose which end should be
-the front and the rear (which must be kept consistent) in order to maximise efficiency.
+of both stacks and queues. The key thing with deques is that the front and the rear MUST
+be kept track of at all times and kept consistent.
 
-One of the ends will be O(1) to add/remove from, and the other end will be O(n).
-Like queues, the tail end is on the left of the list, e.g. for [1, 2, 3], 1 as at the tail.
+We'll learn this later with LinkedLists, but deques are special because it only takes O(1) to
+append/pop from BOTH ends. This is because they're implemented with LinkedLists, rather than
+Python's List. E.g. for [1, 2, 3] it takes O(1) to add 4 = [1,2,3,4] or remove 1 = [2,3,4].
 
-In that sense
-
+The implementation below is a simplified version with O(n) to add/pop from the tail.
 """
 
 class Deque:
@@ -322,6 +320,7 @@ class Deque:
     
     def size(self):
         return len(self.items)
+
     
 print("\n~~~Deques~~~")
 
@@ -337,3 +336,25 @@ print(d.is_empty())
 d.add_rear(8.4)
 print(d.remove_rear())
 print(d.remove_front())
+
+def palindrome_checker(pal):
+    d = Deque()
+    for char in pal:
+        d.add_front(char)
+
+    while d.size() > 1:
+        if d.remove_front() != d.remove_rear():
+            return False
+    return True
+
+print("\npalindromes")
+print(palindrome_checker("radsa"))
+print(palindrome_checker("rad"))
+print(palindrome_checker("dad"))
+print(palindrome_checker("detartrated"))
+
+
+"""
+
+3.20: Unordered Lists
+"""
