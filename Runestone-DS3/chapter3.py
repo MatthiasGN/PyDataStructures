@@ -587,3 +587,148 @@ ll.insert(30, 1)  # Insert 30 at index 1
 print(ll.index(1))  # Expected: 30
 print(ll.pop(0))  # Expected: 10
 print(ll.pop(1))  # Remove 20
+
+
+"""
+3.22: Sorted Lists
+
+This time we're gonna make a special kinda of LinkedList.
+It's gonna be a List sorted ascendingly by number.
+Adding becomes more expensive because we can't just append or prepend anymore.
+
+Let's go.
+"""
+
+class SortedList:
+    def __init__(self):
+        self.head = None
+
+    def __repr__(self):
+        return f"SortedList{self.head}"
+    
+    def add(self, item):
+        curr = self.head
+        new_node = Node(item)
+        if not curr or curr.value >= item:
+            self.head = new_node
+            new_node.next = curr
+            return
+
+        while curr.next and curr.next.value < item:
+            curr = curr.next
+
+        new_node.next = curr.next
+        curr.next = new_node
+
+    def remove(self, item):
+        if not self.head:
+            return
+        if self.head.value == item:
+            self.head = self.head.next
+            return
+
+        curr = self.head
+        while curr.next:
+            if curr.next.value == item:
+                curr.next = curr.next.next
+                return
+            curr = curr.next
+        
+        raise ValueError(f"{item} not found in SortedList.")
+    
+    def search(self, item):
+        curr = self.head
+        while curr:
+            if curr.value == item:
+                return True
+            if curr.value > item: # Early exit :D
+                return False
+            curr = curr.next
+        
+        return False
+    
+    def is_empty(self):
+        return self.head == None
+    
+    def size(self):
+        curr = self.head
+        ctr = 0
+        while curr:
+            ctr += 1
+            curr = curr.next
+        return ctr
+
+    def index(self, item):
+        curr = self.head
+        idx = 0
+        while curr:
+            if curr.value == item:
+                return idx
+            curr = curr.next
+            idx += 1
+        
+        raise ValueError(f"{item} not in list.")
+    
+    def pop(self, idx=None):
+        curr = self.head
+        if not curr:
+            return None
+        if idx is None:
+            idx = self.size() - 1
+        if idx == 0:
+            self.head = self.head.next
+            return curr.value
+
+        curr_idx = 0
+        while curr.next:
+            if curr_idx == idx-1:
+                result = curr.next.value
+                curr.next = curr.next.next
+                return result
+            curr = curr.next
+            curr_idx += 1
+
+        raise IndexError(f"{idx} out of range.")           
+
+
+print(f"~~~SortedLists~~~")
+
+# Testing the SortedList
+sl = SortedList()
+sl.add(5)
+sl.add(1)
+sl.add(3)
+sl.add(2)
+sl.add(4)
+
+print(sl.search(3))  # Expected: True
+sl.remove(3)
+print(sl.search(3))  # Expected: False
+print(sl.search(6))  # Expected: False
+print(sl.size())  # Expected: 4
+print(sl.index(2))  # Expected: 1
+print(sl.pop())  # Expected: 5 (largest)
+print(sl.pop(1))  # Expected: 2
+print(sl.pop()) # Expected: 4
+print(sl.pop()) # Expected: 1
+
+"""
+SortedLists are interesting. Because they essentially cost O(n) to do almost every operation,
+but they maintain the order such that retrieving the min is O(1). If you add a tail pointer too
+(as in a Sorted Doubly Linked List), retrieving both the min and max is O(1). Can have some
+interesting applications.
+
+Just to clarify, for SortedLists:
+- add(item): O(n)
+- remove(item): O(n)
+- index(item): O(n)
+- pop(index=-1): O(n)
+- search(item): O(n)
+- size(): O(n) or O(1) with efficient attribute.
+
+So basically O(n) for everything.
+
+Realistically, the lack of efficiency makes this data structure rarely used, but it's a good
+introduction to things like min and max heaps.
+
+"""
