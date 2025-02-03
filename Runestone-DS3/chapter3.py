@@ -37,28 +37,28 @@ Let's try to implement a Stack.
 
 class Stack:
     def __init__(self):
-        self.items = []
+        self._items = []
 
     def __repr__(self):
-        return f"Stack{self.items}"
+        return f"Stack{self._items}"
 
     def push(self, item):
-        self.items.append(item)
+        self._items.append(item)
 
     def pop(self):
-        return self.items.pop() if self.items else None
+        return self._items.pop() if self._items else None
     
     def peek(self):
-        return self.items[-1] if self.items else None
+        return self._items[-1] if self._items else None
     
     def is_empty(self):
         return self.peek() is None
     
     def size(self):
-        return len(self.items)
+        return len(self._items)
     
     def __len__(self):
-        return len(self.items)
+        return len(self._items)
     
 s = Stack()
 print(s.is_empty())
@@ -213,13 +213,13 @@ Stacks are used for DFS!
 
 class Queue:
     def __init__(self):
-        self.items = []
+        self._items = []
 
     def __repr__(self):
-        return f"Queue{self.items}"
+        return f"Queue{self._items}"
     
     def __len__(self):
-        return len(self.items)
+        return len(self._items)
     
     def size(self):
         return len(self)
@@ -228,12 +228,12 @@ class Queue:
         return True if len(self) == 0 else False
     
     def enqueue(self, item):
-        self.items.insert(0, item)
+        self._items.insert(0, item)
     
     def dequeue(self):
         if self.is_empty():
             return None
-        return self.items.pop()
+        return self._items.pop()
 
     
 print("\n~~Queues~~")
@@ -298,28 +298,28 @@ The implementation below is a simplified version with O(n) to add/pop from the t
 class Deque:
 
     def __init__(self):
-        self.items = []
+        self._items = []
 
     def __repr__(self):
-        return f"Deque{self.items}"
+        return f"Deque{self._items}"
 
     def add_front(self, item):
-        self.items.append(item)
+        self._items.append(item)
 
     def add_rear(self, item):
-        self.items.insert(0, item)
+        self._items.insert(0, item)
 
     def remove_front(self):
-        return self.items.pop() if self.items else None
+        return self._items.pop() if self._items else None
     
     def remove_rear(self):
-        return self.items.pop(0) if self.items else None
+        return self._items.pop(0) if self._items else None
     
     def is_empty(self):
-        return not bool(self.items)
+        return not bool(self._items)
     
     def size(self):
-        return len(self.items)
+        return len(self._items)
 
     
 print("\n~~~Deques~~~")
@@ -356,5 +356,234 @@ print(palindrome_checker("detartrated"))
 
 """
 
-3.20: Unordered Lists
+3.20: Linked Lists
+
+The fun begins. We start with our first Node-based structure.
+
+We'll start with a singly-linked list, where we only keep track of the head.
+
+Okay, a big, big note we're gonna make here. From now on, all your class attributes
+that you define in init should probably START WITH AN UNDERSCORE. It's good coding 
+practice because it signals that the attribute is supposed to be PRIVATE, i.e. only 
+changed through methods and not directly outside of the class. Gonna apply this to all 
+other classes too.
+
+The other point of this is that you begin the attributes defined in init with an 
+underscore, then you're supposed to use decorators with proper getters and setters
+as below to make it much simpler to update and read, while maintaining safety.
+
+However, there's an important caveat here; you don't need to use the underscore
+syntax if the attribute is DESIGNED to be edited publicly.
+
+The LinkedList is a perfect example; Node attributes are supposed to be private, only
+edited through getter and setter methods - following the conventions of ENCAPSULATION.
+
+But the LinkedList itself will have a self.head attribute with no underscore,
+precisely because the head is the public access point of the LinkedList - it's meant
+to be interacted with directly.
+
+Let's begin.
 """
+
+class Node:
+    def __init__(self, value):
+        self._value = value
+        self._next = None
+
+    @property
+    def value(self):
+        return self._value
+    
+    @value.setter
+    def value(self, value):
+        self._value = value
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, next):
+        self._next = next
+
+    def __repr__(self):
+        return f"Node({self.value})" 
+
+print("\n~~~Linked Lists~~~")
+
+head = Node(0)
+curr = head
+for num in range(10):
+    curr.next = Node(num)
+    curr = curr.next
+
+print(head)
+
+"""
+Key point: singly LinkedList addition/removal occurs at the HEAD, because that's
+what we have immediate access to. O(1) implementation.
+
+The idea of the LinkedList is to ensure the developer never has to interact with
+or create a Node. They just use the LinkedList object.
+"""
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def is_empty(self):
+        return self.head == None
+    
+    def size(self):
+        # Note that this is inefficient - simply for learning how to traverse the linkedlist
+        ctr = 0
+        curr = self.head
+        while curr:
+            ctr += 1
+            curr = curr.next
+        return ctr
+
+    def add(self, item):
+        curr = Node(item)
+        curr.next = self.head
+        self.head = curr
+
+    def search(self, item):
+        curr = self.head
+        while curr:
+            if curr.value == item:
+                return True
+            curr = curr.next
+        return False
+
+# Note in remove(): if the list is empty, we don't raise an error of sorts.
+# The reason why is because removing from an empty list is a feasibly common 
+# operation that may occur in more complex systems, and we wouldn't want the entire 
+# program to shutdown in the case of an empty list. For example, double checking that
+# an item has been removed from a list would be a valid and common idea even in testing.
+
+# If every time we called remove we needed to handle exceptions, it would make the rest
+# of our codebase unnecessarily tedious and unreadable. However, obviously some lists
+# might need to behave differently where all items should be carefully tracked, in which
+# case you'd implement an Error.
+
+    def remove(self, item):
+        curr = self.head
+        if not curr:
+            return
+        if curr.value == item:
+            self.head = curr.next
+            return
+        while curr.next:
+            if curr.next.value == item:
+                curr.next = curr.next.next
+                return
+            curr = curr.next
+        
+        raise ValueError(f"{item} is not in LinkedList.")
+    
+    def append(self, item):
+        curr = self.head
+        if not curr:
+            self.head = Node(item)
+            return
+        while curr.next:
+            curr = curr.next
+        curr.next = Node(item)
+
+    def insert(self, item, idx):
+        if idx < 0:
+            raise IndexError(f"Index cannot be negative.")
+        
+        new_node = Node(item)
+        if idx == 0:
+            new_node.next = self.head
+            self.head = new_node
+            return
+        
+        curr = self.head
+        curr_idx = 0
+        while curr:
+            if curr_idx == idx-1:
+                new_node.next = curr.next
+                curr.next = new_node
+                return
+            curr = curr.next
+            curr_idx += 1
+
+        raise IndexError(f"Index {idx} out of range.")
+
+    def pop(self, idx=0):
+        if idx < 0:
+            raise IndexError(f"Index cannot be negative.")
+        if not self.head:
+            return None
+        
+        curr = self.head
+        if idx == 0:
+            self.head = self.head.next
+            return curr.value
+        
+        curr_idx = 0
+        while curr:
+            if curr_idx == idx-1 and curr.next:
+                result = curr.next.value
+                curr.next = curr.next.next
+                return result
+            curr = curr.next
+            curr_idx += 1
+
+        raise IndexError(f"Index out of range.")
+
+    def index(self, idx):
+        if idx < 0:
+            raise IndexError(f"Index cannot be negative.")
+
+        curr_idx = 0
+        curr = self.head
+        while curr:
+            if curr_idx == idx:
+                return curr.value
+            curr = curr.next
+            curr_idx += 1
+
+        raise IndexError(f"Index cannot be negative.")
+
+my_list = LinkedList()
+
+my_list.add(31)
+my_list.add(77)
+my_list.add(17)
+my_list.add(93)
+my_list.add(26)
+my_list.add(54)
+
+print(my_list.size())
+print(my_list.search(93))
+print(my_list.search(100))
+
+my_list.add(100)
+print(my_list.search(100))
+print(my_list.size())
+
+my_list.remove(54)
+print(my_list.size())
+my_list.remove(93)
+print(my_list.size())
+my_list.remove(31)
+print(my_list.size())
+print(my_list.search(93))
+
+try:
+    my_list.remove(27)
+except ValueError as ve:
+    print(ve)
+
+ll = LinkedList()
+ll.insert(10, 0)  # Insert 10 at index 0
+ll.insert(20, 1)  # Insert 20 at index 1
+ll.insert(30, 1)  # Insert 30 at index 1
+
+print(ll.index(1))  # Expected: 30
+print(ll.pop(0))  # Expected: 10
+print(ll.pop(1))  # Remove 20
