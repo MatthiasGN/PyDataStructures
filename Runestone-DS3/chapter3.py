@@ -179,6 +179,13 @@ print(postfix_eval("7 8 + 3 2 + /"))
 """
 Essentially: any time you need to reverse the order of the items in your algorithm,
 try using a Stack.
+
+Another interesting idea with stacks is that, they're so good at evaluation because
+they can 'hold' memory temporarily until the right operator is detected.
+
+Try to consider that idea with language translation - you 'hold' adjectives until you
+encounter a noun, you hold 'adverbs' until you encounter a verb, etc... Stacks are
+great for language and even programming language translation.
 """
 
 
@@ -277,6 +284,15 @@ josephus(41, 3)
 Essentially, think of queues as simply real-life queues. Use them when you need to queue
 things up! Practical examples are task scheduling, print scheduling, and video streaming.
 
+Queues are also great for TIMING simulations, since you can add a time to your queue
+(which might represent the start), and then removing from the queue simply removes that
+first time (start), which you can then compare with the time now (end) to get a simple
+timer.
+
+Queues can also be interesting in applications where a 'circular' option is needed.
+Kind of like a Circular Linked List - this can be done easily with a queue by enqueuing
+and dequeuing at the same time.
+
 BFS uses Queues!
 
 """
@@ -288,11 +304,12 @@ Pronounced 'deck'. Decks (deques) are double-ended queues, so essentially gain t
 of both stacks and queues. The key thing with deques is that the front and the rear MUST
 be kept track of at all times and kept consistent.
 
-We'll learn this later with LinkedLists, but deques are special because it only takes O(1) to
+We'll learn this later with Nodes, but deques are special because it only takes O(1) to
 append/pop from BOTH ends. This is because they're implemented with LinkedLists, rather than
 Python's List. E.g. for [1, 2, 3] it takes O(1) to add 4 = [1,2,3,4] or remove 1 = [2,3,4].
 
-The implementation below is a simplified version with O(n) to add/pop from the tail.
+The implementation below is a simplified version without nodes, costing O(n) to add/pop from the tail
+but O(1) to add/pop from the head.
 """
 
 class Deque:
@@ -352,6 +369,15 @@ print(palindrome_checker("radsa"))
 print(palindrome_checker("rad"))
 print(palindrome_checker("dad"))
 print(palindrome_checker("detartrated"))
+
+"""
+Note that deques are really different to doubly linked lists 
+(idk why I thought they were the same). Deques are just a singly linked list
+with a pointer to both the head and tail.
+
+We'll have more notes on Deques when we implement one with Nodes.
+
+"""
 
 
 """
@@ -455,6 +481,14 @@ class LinkedList:
                 return True
             curr = curr.next
         return False
+    
+    def __str__(self):
+        values = []
+        curr = self.head
+        while curr:
+            values.append(str(curr.value))
+            curr = curr.next
+        return " -> ".join(values)
 
 # Note in remove(): if the list is empty, we don't raise an error of sorts.
 # The reason why is because removing from an empty list is a feasibly common 
@@ -513,27 +547,29 @@ class LinkedList:
 
         raise IndexError(f"Index {idx} out of range.")
 
-    def pop(self, idx=0):
+    def pop(self, idx=None):
+        if idx is None:
+            if self.size() == 0:
+                return None
+            idx = self.size() - 1
         if idx < 0:
             raise IndexError(f"Index cannot be negative.")
-        if not self.head:
-            return None
         
         curr = self.head
         if idx == 0:
             self.head = self.head.next
             return curr.value
-        
+
         curr_idx = 0
-        while curr:
-            if curr_idx == idx-1 and curr.next:
+        while curr.next:
+            if curr_idx == idx-1:
                 result = curr.next.value
                 curr.next = curr.next.next
                 return result
             curr = curr.next
             curr_idx += 1
 
-        raise IndexError(f"Index out of range.")
+        raise IndexError(f"{idx} out of range.")    
 
     def index(self, idx):
         if idx < 0:
@@ -565,6 +601,7 @@ print(my_list.search(100))
 my_list.add(100)
 print(my_list.search(100))
 print(my_list.size())
+print(my_list)
 
 my_list.remove(54)
 print(my_list.size())
@@ -670,11 +707,14 @@ class SortedList:
         raise ValueError(f"{item} not in list.")
     
     def pop(self, idx=None):
-        curr = self.head
-        if not curr:
-            return None
         if idx is None:
+            if self.size() == 0:
+                return None
             idx = self.size() - 1
+        if idx < 0:
+            raise IndexError(f"Index cannot be negative.")
+        
+        curr = self.head
         if idx == 0:
             self.head = self.head.next
             return curr.value
@@ -690,6 +730,13 @@ class SortedList:
 
         raise IndexError(f"{idx} out of range.")           
 
+    def __str__(self):
+        values = []
+        curr = self.head
+        while curr:
+            values.append(str(curr.value))
+            curr = curr.next
+        return " -> ".join(values)
 
 print(f"~~~SortedLists~~~")
 
@@ -731,4 +778,144 @@ So basically O(n) for everything.
 Realistically, the lack of efficiency makes this data structure rarely used, but it's a good
 introduction to things like min and max heaps.
 
+Now, what you may have noticed with these Linked List operations is that
+the obvious special case to handle is modification to the head of the linked list.
+Once we introduce tails, that will also be a special case.
+
+It'll typically be: 
+- check input parameter is correct (e.g index out of range)
+- check linked list isn't empty
+- handle modification to 1 node in list (head = tail)
+- handle modification to head node
+- handle modification to tail node
+
 """
+
+# Exercises
+
+print(decimal_base_converter(17, 2))
+print(decimal_base_converter(45, 2))
+print(decimal_base_converter(96, 2))
+
+print(infix_to_postfix("(A+B)*(C+D)*(E+F)"))
+print(infix_to_postfix("A+((B+C)*(D+E))"))
+print(infix_to_postfix("A*B*C*D+E+F"))
+
+print(postfix_eval("2 3 * 4 +"))
+print(postfix_eval("1 2 + 3 + 4 + 5 +"))
+print(postfix_eval("1 2 3 4 5 * + * +"))
+
+
+def html_checker(html): # Assuming tag arrows are correct/simple in the input.
+    tags = Stack()
+    tag = ""
+    opening = None  # Cycle between None, True and False for different scanning states
+    # IN RETROSPECT: try to look for a non-state solution with simple problems first,
+    # because it adds a layer of complexity. But arguably states are good for more difficult
+    # problems, i.e. LeetCode Mediums and Hards so keep them in the bank.
+    for char in html:
+        if char == "<":
+            opening = True
+        elif char == "/" and opening is True:
+            opening = False
+        elif char == ">":
+            if opening is True:
+                tags.push(tag)
+            elif opening is False:
+                if tags.pop() != tag:
+                    return False
+            tag = ""
+            opening = None
+        elif char.isalpha():
+            if opening is not None:
+                tag += char
+    
+    return tags.is_empty()
+
+html_str = """
+<html>
+   <head>
+      <title>
+         Example
+      </title>
+   </head>
+
+   <body>
+      <h1>Hello, world</h1>
+   </body>
+</html>
+"""
+print(f"HTML was checked and returned {html_checker(html_str)}.")
+
+def palindrome_checker_spaces(pal):
+    d = Deque()
+    for char in pal:
+        if char.isalpha():
+            d.add_front(char)
+
+    while d.size() > 1:
+        if d.remove_front() != d.remove_rear():
+            return False
+    return True
+
+palindrome_spaces = "I PREFER PI"
+print(f"{palindrome_spaces} was checked as a palindrome and returned {palindrome_checker_spaces(palindrome_spaces)}.")
+
+
+class NodeQueue:
+    def __init__(self):
+        self.head = self.tail = None
+        self.size = 0
+    
+    def __repr__(self):
+        values = []
+        current = self.head
+        while current:
+            values.append(str(current.value))
+            current = current.next
+        return " -> ".join(values) if values else "Queue is empty."
+    
+    def enqueue(self, item):
+        new_node = Node(item)
+        if not self.tail:
+            self.head = self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        self.size += 1
+        
+    def dequeue(self):
+        if not self.head:
+            raise IndexError("Queue is empty.")
+        result = self.head.value
+        if self.head == self.tail:
+            self.head = self.tail = None
+        else:
+            self.head = self.head.next
+        self.size -= 1
+        return result
+
+print("\n~~NodeQueues~~")
+    
+q = NodeQueue()
+q.enqueue(4)
+q.enqueue("dog")
+q.enqueue(True)
+print(q)
+print(q.size)
+print(q.size == 0)
+print(q.enqueue(8.4))
+print(q.dequeue())
+print(q.dequeue())
+print(q)
+print(q.size)
+
+"""
+Queue with O(1) enqueue and O(1) dequeue implemented.
+
+Key thing to notice is that the self.head is on the 'left' instead of the right
+as compared to just using Python lists.
+
+Next up: DoublyLinkedList.
+"""
+
