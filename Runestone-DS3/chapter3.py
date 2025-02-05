@@ -919,3 +919,138 @@ as compared to just using Python lists.
 Next up: DoublyLinkedList.
 """
 
+class DNode:
+    def __init__(self, value):
+        self._value = value
+        self._next = self._prev = None
+
+    def __repr__(self):
+        return f"Node({self._value})"
+
+    @property
+    def value(self):
+        return self._value
+    
+    @value.setter
+    def value(self, value):
+        self._value = value
+
+    @property
+    def next(self):
+        return self._next
+    
+    @next.setter
+    def next(self, next):
+        self._next = next
+
+    @property
+    def prev(self):
+        return self._prev
+    
+    @prev.setter
+    def prev(self, prev):
+        self._prev = prev
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = self.tail = None
+        self.size = 0
+    
+    def __repr__(self):
+        values = []
+        curr = self.head
+        while curr:
+            values.append(str(curr.value))
+            curr = curr.next
+        return ", ".join(values) if values else "DoublyLinkedList is empty."
+    
+    def prepend(self, item):
+        new_node = DNode(item)
+        if not self.head:
+            self.head = self.tail = new_node
+        else:
+            new_node.next = self.head
+            self.head.prev = new_node
+            self.head = new_node
+        self.size += 1
+    
+    def append(self, item):
+        new_node = DNode(item)
+        if not self.tail:
+            self.head = self.tail = new_node
+        else:
+            new_node.prev = self.tail
+            self.tail.next = new_node
+            self.tail = new_node
+        self.size += 1
+
+    def search(self, item):
+        curr = self.head
+        while curr:
+            if curr.value == item:
+                return True
+            curr = curr.next
+
+        return False
+
+    def index(self, idx):
+        if idx < 0:
+            raise IndexError("Can't have negative index.")
+        if not self.head:
+            raise IndexError("List is empty.")
+        if idx >= self.size:
+            raise IndexError(f"Index {idx} out of range for size {self.size}.")
+        
+        curr = self.head
+        curr_idx = 0
+        while curr_idx != idx:
+            curr = curr.next
+            curr_idx += 1
+        return curr.value            
+
+    def remove(self, item):
+        if not self.head:
+            raise IndexError("List is empty.")
+        
+        curr = self.head
+        while curr:
+            if curr.value == item:
+                if curr.prev:
+                    curr.prev.next = curr.next
+                else:
+                    self.head = curr.next  # Removing head
+
+                if curr.next:
+                    curr.next.prev = curr.prev
+                else:
+                    self.tail = curr.prev  # Removing tail
+
+                self.size -= 1
+                return True
+            curr = curr.next
+
+        raise ValueError(f"Item {item} not found in list.")
+
+    def pop(self, idx=None):
+        if not self.head:
+            raise IndexError("List is empty.")
+        if idx < 0:
+            idx = self.size + idx
+        if idx < 0 or idx >= self.size:
+            raise IndexError("Index out of range.")
+        
+        curr = self.head
+        for _ in range(idx):
+            curr = curr.next
+
+        if curr.prev:
+            curr.prev.next = curr.next
+        else:
+            self.head = curr.next
+        if curr.next:
+            curr.next.prev = curr.prev
+        else:
+            self.tail = curr.prev
+
+        self.size -= 1
+        return curr.value
