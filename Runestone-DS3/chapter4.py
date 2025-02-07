@@ -348,6 +348,7 @@ def sierpinski(points, degree, my_turtle):
 
 def main():
     my_turtle = turtle.Turtle()
+    my_turtle.speed(0)
     my_win = turtle.Screen()
     my_points = [[-180, -150], [0, 150], [180, -150]]
     print(my_points)
@@ -537,8 +538,185 @@ def search_from(maze, start_row, start_column):
     return found
 
 
-my_maze = Maze("maze2.txt")
-my_maze.draw_maze()
-my_maze.update_position(my_maze.start_row, my_maze.start_col)
+# my_maze = Maze("maze2.txt")
+# my_maze.draw_maze()
+# my_maze.update_position(my_maze.start_row, my_maze.start_col)
 
-search_from(my_maze, my_maze.start_row, my_maze.start_col)
+# search_from(my_maze, my_maze.start_row, my_maze.start_col)
+
+"""
+Elite. Note how we check each base case first, then check all the recurrences.
+
+That brings us to the next bit of fun.
+
+4.12 Dynamic Programming
+
+We start off with the classic problem of fewest coin denominations. For example,
+if I'm owed $3.80, what's the fewest coins that can satisfy that amount?
+Well, it'd be:
+- $2 x 1
+- $1 x 1
+- 50c x 1
+- 20c x 1
+- 10c x 1
+= 5 coins.
+
+We basically just choose the biggest coin we can at each step.
+This idea of always choosing the 'best' option at each recursive step is called a
+GREEDY algorithm. We know these well, but lots more on that later.
+
+However, what if we introduced a new denomiation of coin, e.g. 40c?
+
+All of a sudden, our greedy algorithm doesn't find the most optimal solution, since
+the new optimal becomes:
+- $2 x 1
+- $1 x 1
+- 40c x 2
+= 4 coins.
+
+So even though 40c is less than 50c, it's more optimal.
+As such, we need to find a new solution: Dynamic Programming.
+
+As similar to the maze problem, we start with our base cases, then we set up a
+RECURRENCE RELATION. To set this up, we essentially think of all the possible
+paths towards the optimal solution within the recursive function and make an
+equation out of it. In this case, we have:
+num_coins = min(
+    1 + num_coins(original_amount - 5c)
+    1 + num_coins(original_amount - 10c)
+    1 + num_coins(original_amount - 20c)
+    1 + num_coins(original_amount - 40c) # Our new case
+    1 + num_coins(original_amount - 50c)
+    1 + num_coins(original_amount - $1)
+    1 + num_coins(original_amount - $2)
+)
+
+An example smaller function is implemented below:
+"""
+
+recursions = 0
+def make_change_dnc(coin_denoms, change):
+    global recursions
+    recursions += 1
+    if change in coin_denoms:
+        return 1
+    if change > 0:
+        min_coins = float("inf")
+        for i in [c for c in coin_denoms if c <= change]:
+            num_coins = 1+make_change_dnc(coin_denoms, change - i)
+            min_coins = min(num_coins, min_coins)
+        return min_coins
+    
+print(make_change_dnc([1,5,10,25], 42))
+print(f"{recursions} recursions!")
+
+"""
+However, what you may notice is that this is incredibly inefficient.
+The number of recursive calls actually becomes EXPONENTIAL.
+For example, with the example of 4 coin denominations and a target of 42,
+we end up with O(4^n) = O(4^42) recursions in the worst case!
+Given that we have the average case here, it takes 108,534 recursions.
+
+Super inefficient. Now, you may have also realised something - this isn't
+actually dynamic programming yet. It's DIVIDE AND CONQUER. The reason why
+is because we're not using DP's special tools: tabulation and memoization.
+We're just exponentially dividing the problem down into smaller subproblems.
+
+To give you an understanding of why this is so inefficient, consider that
+when trying to solve this problem with a target of 42, we would feasibly have
+to recurse to the smaller target of 12 in multiple ways - for example, 42 minus
+10c minus 10c minus 10c, or replace any of those with minus 5c x 2. However,
+each time we get to this same target, WE'RE RECALCULATING THE RESULT THROUGH
+RECURSION EACH TIME, even though WE'VE ALREADY CALCULATED IT BEFORE.
+
+So to solve this issue, we need to store the result of previous calculations.
+A simple way to do this with dynamic programming is to store them in a table!
+
+Let's have a look:
+"""
+recursions = 0
+def make_change_2(coin_value_list, change, known_results):
+    global recursions
+    recursions += 1
+    min_coins = change
+    if change in coin_value_list:
+        known_results[change] = 1
+        return 1
+    elif known_results[change] > 0:
+        return known_results[change]
+    else:
+        for i in [c for c in coin_value_list if c <= change]:
+            num_coins = 1 + make_change_2(coin_value_list, change - i, known_results)
+            if num_coins < min_coins:
+                min_coins = num_coins
+            known_results[change] = min_coins
+    return min_coins
+
+print(make_change_2([1, 5, 10, 25], 42, [0] * 43))
+print(f"{recursions} recursions!")
+
+"""
+How insane is that. We've gone from 108,534 recursions to just 122 !!
+
+Now note that even though we're using a table, THIS IS NOT TABULATION.
+This is instead called MEMOIZATION (or CACHING). The reason why is because 
+memoization refers to top-down dynamic programming (i.e. start at biggest problem
+and divide them down from there), while tabulation refers to bottom-up
+dynamic programming (i.e. solve the subproblems first, then solve the
+biggest problem without recursion).
+
+To understand this a bit better, let's go into a bit more depth on memoization.
+What you'll note is that the results table is initially just a table of zeroes,
+i.e. empty. Then as the function recursively calls and finds a result that isn't
+in the table, it adds that result AS NEEDED. At the end of all recursions, the
+table may not even be fully filled in - for example, if 1 was not a coin
+denomination there would feasibly be many holes in the table, e.g. calculating the
+change required for 39 would never be needed.
+
+In contrast, tabulation does this all the other way. It actually starts by FILLING
+OUT the table, which is what takes up the bulk of our solution, allowing us to simply
+call the solution needed at the end. There are NO HOLES in the table - if we wanted
+to then find the solution to a smaller number, we are guaranteed to have it and be
+able to return it in O(1).
+
+In particular, filling out the table with tabulation DOES NOT REQUIRE RECURSION.
+That is the major difference between the two - memoization uses recursion,
+while tabulation does not.
+
+A final thing to note is that in our above solution, we pass the result table
+through the recursions. The other, possibly simpler but less safe/modular/clean way
+to implement this is with a global memoization variable, i.e. a dictionary
+created outside the function but edited from within.
+
+With all that said, let's take a look at the tabulation DP solution:
+"""
+
+operations = 0
+def make_change_tab(coin_value_list, change):
+    global operations
+    # Initialize DP table with a large number (inf means no solution found yet)
+    dp = [float("inf")] * (change + 1)
+    dp[0] = 0  # Base case: 0 coins needed for amount 0
+
+    # Compute the minimum coins required for each amount up to 'change'
+    for amount in range(1, change + 1):
+        for coin in coin_value_list:
+            operations += 1
+            if coin <= amount:
+                dp[amount] = min(dp[amount], 1 + dp[amount - coin])
+
+    return dp[change] if dp[change] != float("inf") else -1  # Return -1 if no solution
+
+print(make_change_tab([1, 5, 10, 25], 42))
+print(f"{operations} operations!")
+
+"""
+168 operations to 122 recursions. Fairly similar. What should be noted is that each recursion
+actually has a fair few operations within, so the actual number of operations for the memoization
+example above is 200+. We call this the RECURSION OVERHEAD.
+
+As such, if we really want to maximise efficiency we should always aim to find a tabulation solution
+first, then only move to memoization if that's too difficult / not possible.
+
+"""
+
