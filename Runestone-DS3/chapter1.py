@@ -37,64 +37,64 @@ print("Continuing on...")
 
 # infinite monkey theorem. Goal: "afternoon punters and dribblers". 31 chars.
 
-# def random_string(str_len: int):
-#     random_str = ""
-#     letters = "abcedfghijklmnopqrstuvwxyz "
-#     for i in range(str_len):
-#         random_str += letters[random.randint(0,26)]
-#     return random_str
+def random_string(str_len: int):
+    random_str = ""
+    letters = "abcedfghijklmnopqrstuvwxyz "
+    for i in range(str_len):
+        random_str += letters[random.randint(0,26)]
+    return random_str
 
-# def random_score(goal_string, random_string):
-#     score = 0
-#     for i, char in enumerate(random_string):
-#         if char == goal_string[i]:
-#             score += 1
+def random_score(goal_string, random_string):
+    score = 0
+    for i, char in enumerate(random_string):
+        if char == goal_string[i]:
+            score += 1
     
-#     return score / len(goal_string)
+    return score / len(goal_string)
 
-# def infinite_monkey(goal_string):
-#     best_score = 0
-#     best_str = ""
-#     for i in range(5000000):
-#         random_str = random_string(len(goal_str))
-#         score = random_score(random_str, goal_string)
+def infinite_monkey(goal_string):
+    best_score = 0
+    best_str = ""
+    for i in range(5000000):
+        random_str = random_string(len(goal_str))
+        score = random_score(random_str, goal_string)
 
-#         if score >= best_score:
-#             best_score = score
-#             best_str = random_str
+        if score >= best_score:
+            best_score = score
+            best_str = random_str
 
-#         if i % 50000 == 0:
-#             print("%s %.0f%%" % (best_str, best_score*100))
+        if i % 50000 == 0:
+            print("%s %.0f%%" % (best_str, best_score*100))
 
-# goal_str = "what is that what was that"
+goal_str = "what is that what was that"
 # infinite_monkey(goal_str)
 
-# def hillclimb(goal_string, curr_string):
-#     letters = "abcedfghijklmnopqrstuvwxyz "
-#     new_string = ""
-#     for i in range(len(curr_string)):
-#         if curr_string[i] == goal_string[i]:
-#             new_string += curr_string[i]
-#         else:
-#             new_string += letters[random.randint(0,26)]
-#     return new_string
+def hillclimb(goal_string, curr_string):
+    letters = "abcedfghijklmnopqrstuvwxyz "
+    new_string = ""
+    for i in range(len(curr_string)):
+        if curr_string[i] == goal_string[i]:
+            new_string += curr_string[i]
+        else:
+            new_string += letters[random.randint(0,26)]
+    return new_string
 
-# def infinite_monkey_hillclimb(goal_string):
-#     best_score = 0
-#     curr_str = random_string(len(goal_string))
-#     for i in range(100000):
-#         curr_str = hillclimb(goal_string, curr_str)
-#         score = random_score(curr_str, goal_string)
+def infinite_monkey_hillclimb(goal_string):
+    best_score = 0
+    curr_str = random_string(len(goal_string))
+    for i in range(100000):
+        curr_str = hillclimb(goal_string, curr_str)
+        score = random_score(curr_str, goal_string)
 
-#         if score > best_score:
-#             best_score = score
-#             print(f"{curr_str} {best_score*100:.0f}%%")
+        if score > best_score:
+            best_score = score
+            print(f"{curr_str} {best_score*100:.0f}%%")
 
-#         if score == 1:
-#             print(f"{i} iterations.")
-#             return
+        if score == 1:
+            print(f"{i} iterations.")
+            return
 
-# infinite_monkey_hillclimb(goal_str)
+infinite_monkey_hillclimb(goal_str)
 
 
 '''1.13 Defining Classes'''
@@ -297,5 +297,18 @@ Practically this refers to using getter and setter functions in a custom class. 
 
 String interpolation: allows for the use of template variables directly within a string.'''
 
-# Great idea to learn interfaces and structs in the future too.
-# Make sure you really understand the difference between an interface, a struct and a class.
+"""
+What are the principles of Object-Oriented Programming?
+
+1. Encapsulation: both data and methods are contained within objects (classes)
+2. Abstraction: objects do not require instantiating data or methods, allowing for abstract implementation
+3. Inheritance: objects can inherit or be inherited by other objects
+4. Polymorphism: objects can be treated as instances of their parent class rather than their actual class
+
+
+Class vs Struct vs Interface
+
+Class: supports inheritance, polymorphism and encapsulation. Contains both data and methods. Reference typed.
+Struct: does not support inheritance or polymorphism. Usually only contains data. Value typed.
+Interface: supports inheritance and polymorphism. Defines method signatures which must be implemented by a class or struct.
+"""

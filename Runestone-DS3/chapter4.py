@@ -272,32 +272,31 @@ Pretty cool.
 And honestly one of the coolest uses of recursions I've ever seen: FRACTALS.
 """
 
-# def tree(branch_len, t):
-#     if branch_len > 5:
-#         t.pensize(branch_len / 75 * 20)
-#         t.forward(branch_len)
-#         t.right(20)
-#         tree(branch_len - 15, t)
-#         t.left(40)
-#         tree(branch_len - 15, t)
-#         t.right(20)
-#         t.color("brown")
-#         if branch_len < 20:
-#             t.color("green")
-#         t.backward(branch_len)
+def tree(branch_len, t):
+    if branch_len > 10:
+        t.pensize(branch_len / 75 * 20)
+        t.forward(branch_len)
+        t.right(20)
+        tree(branch_len - 7, t)
+        t.left(40)
+        tree(branch_len - 7, t)
+        t.right(20)
+        # t.color("brown")
+        # if branch_len < 20:
+        #     t.color("green")
+        t.backward(branch_len)
 
-# def main():
-#     t = turtle.Turtle()
-#     my_win = turtle.Screen()
-#     my_win.setup(400, 400)
-#     t.left(90)
-#     t.up()
-#     t.backward(100)
-#     t.down()
-#     t.color("brown")
-#     tree(75, t)
-#     my_win.exitonclick()
-# main()
+def main():
+    t = turtle.Turtle()
+    my_win = turtle.Screen()
+    t.left(90)
+    t.up()
+    t.backward(200)
+    t.down()
+    # t.color("brown")
+    tree(75, t)
+    my_win.exitonclick()
+main()
 
 """
 What this should make you realise is that Recursion is basically just a Depth First Search!
@@ -351,12 +350,11 @@ def main():
     my_turtle = turtle.Turtle()
     my_win = turtle.Screen()
     my_points = [[-180, -150], [0, 150], [180, -150]]
-    my_points = [[x*2 for x in y] for y in my_points]
     print(my_points)
-    sierpinski(my_points, 6, my_turtle)
+    sierpinski(my_points, 5, my_turtle)
     my_win.exitonclick()
 
-main()
+# main()
 
 """
 Realising somethere here. When you watch this implementation, this is a DFS drawing of a fractal.
@@ -364,5 +362,183 @@ But it should absolutely be possible to achieve the same thing with a BFS, i.e. 
 triangles before the smaller ones. I wonder if you'd still use recursion or not... you could probably
 do it both with and without it.
 
-Either way, TURTLE programming is awesome.
+Either way, TURTLE programming is elite.
+
+Next problem: Tower of Hanoi
 """
+
+def tower_of_hanoi(n, from_tower, with_tower, to_tower, towers):
+    if n == 1:
+        disk = towers[from_tower].pop()
+        towers[to_tower].append(disk)
+        print(f"A: {str(towers['A']):<{max_width}}, B: {str(towers['B']):<{max_width}}, C: {str(towers['C']):<{max_width}}")
+        return
+
+    tower_of_hanoi(n - 1, from_tower, to_tower, with_tower, towers)
+
+    disk = towers[from_tower].pop()
+    towers[to_tower].append(disk)
+    print(f"A: {str(towers['A']):<{max_width}}, B: {str(towers['B']):<{max_width}}, C: {str(towers['C']):<{max_width}}")
+
+    tower_of_hanoi(n - 1, with_tower, from_tower, to_tower, towers)
+
+num_disks = 4
+towers = {
+    "A": list(range(num_disks, 0, -1)),  # Disks in descending order
+    "B": [],
+    "C": []
+}
+
+max_width = max(len(str(towers[peg])) for peg in towers)
+print("\n~~~Towers of Hanoi~~~")
+print(f"A: {str(towers['A']):<{max_width}}, B: {str(towers['B']):<{max_width}}, C: {str(towers['C']):<{max_width}}")
+
+tower_of_hanoi(num_disks, "A", "B", "C", towers)
+
+"""
+Pretty cool. Main thing to note here is that if you weren't using recursion,
+you'd just use a stack for each tower. But that's precisely the point -
+recursion uses CALL STACKS.
+
+Next up: Exploring a Maze.
+"""
+
+
+START = "S"
+OBSTACLE = "+"
+TRIED = "."
+DEAD_END = "-"
+PART_OF_PATH = "O"
+
+
+class Maze:
+    def __init__(self, maze_filename):
+        with open(maze_filename, "r") as maze_file:
+            self.maze_list = [
+                [ch for ch in line.rstrip("\n")]
+                for line in maze_file.readlines()
+            ]
+        self.rows_in_maze = len(self.maze_list)
+        self.columns_in_maze = len(self.maze_list[0])
+        for row_idx, row in enumerate(self.maze_list):
+            if START in row:
+                self.start_row = row_idx
+                self.start_col = row.index(START)
+                break
+
+        self.x_translate = -self.columns_in_maze / 2
+        self.y_translate = self.rows_in_maze / 2
+        self.t = turtle.Turtle()
+        self.t.shape("turtle")
+        self.wn = turtle.Screen()
+        self.wn.setworldcoordinates(
+            -(self.columns_in_maze - 1) / 2 - 0.5,
+            -(self.rows_in_maze - 1) / 2 - 0.5,
+            (self.columns_in_maze - 1) / 2 + 0.5,
+            (self.rows_in_maze - 1) / 2 + 0.5,
+        )
+
+    def draw_maze(self):
+        self.t.speed(10)
+        self.wn.tracer(0)
+        for y in range(self.rows_in_maze):
+            for x in range(self.columns_in_maze):
+                if self.maze_list[y][x] == OBSTACLE:
+                    self.draw_centered_box(
+                        x + self.x_translate, -y + self.y_translate, "orange"
+                    )
+        self.t.color("black")
+        self.t.fillcolor("blue")
+        self.wn.update()
+        self.wn.tracer(1)
+
+    def draw_centered_box(self, x, y, color):
+        self.t.up()
+        self.t.goto(x - 0.5, y - 0.5)
+        self.t.color(color)
+        self.t.fillcolor(color)
+        self.t.setheading(90)
+        self.t.down()
+        self.t.begin_fill()
+        for i in range(4):
+            self.t.forward(1)
+            self.t.right(90)
+        self.t.end_fill()
+
+    def move_turtle(self, x, y):
+        self.t.up()
+        self.t.setheading(self.t.towards(x + self.x_translate, -y + self.y_translate))
+        self.t.goto(x + self.x_translate, -y + self.y_translate)
+
+    def drop_bread_crumb(self, color):
+        self.t.dot(10, color)
+
+    def update_position(self, row, col, val=None):
+        if val:
+            self.maze_list[row][col] = val
+        self.move_turtle(col, row)
+
+        if val == PART_OF_PATH:
+            color = "green"
+        elif val == OBSTACLE:
+            color = "red"
+        elif val == TRIED:
+            color = "black"
+        elif val == DEAD_END:
+            color = "red"
+        else:
+            color = None
+
+        if color:
+            self.drop_bread_crumb(color)
+
+    def is_exit(self, row, col):
+        return (
+            row == 0
+            or row == self.rows_in_maze - 1
+            or col == 0
+            or col == self.columns_in_maze - 1
+        )
+
+    def __getitem__(self, idx):
+        return self.maze_list[idx]
+
+
+def search_from(maze, start_row, start_column):
+    # try each of four directions from this point until we find a way out.
+    # base Case return values:
+    #  1. We have run into an obstacle, return false
+    maze.update_position(start_row, start_column)
+    if maze[start_row][start_column] == OBSTACLE:
+        return False
+    #  2. We have found a square that has already been explored
+    if (
+        maze[start_row][start_column] == TRIED
+        or maze[start_row][start_column] == DEAD_END
+    ):
+        return False
+    # 3. We have found an outside edge not occupied by an obstacle
+    if maze.is_exit(start_row, start_column):
+        maze.update_position(start_row, start_column, PART_OF_PATH)
+        return True
+    maze.update_position(start_row, start_column, TRIED)
+    # Otherwise, use logical short circuiting to try each direction
+    # in turn (if needed)
+    found = (
+        search_from(maze, start_row - 1, start_column)
+        or search_from(maze, start_row, start_column - 1)
+        or search_from(maze, start_row + 1, start_column)
+        or search_from(maze, start_row, start_column + 1)
+    )
+    if found:
+        maze.update_position(start_row, start_column, PART_OF_PATH)
+    else:
+        maze.update_position(start_row, start_column, DEAD_END)
+    return found
+
+
+my_maze = Maze("maze2.txt")
+my_maze.draw_maze()
+my_maze.update_position(my_maze.start_row, my_maze.start_col)
+
+search_from(my_maze, my_maze.start_row, my_maze.start_col)
