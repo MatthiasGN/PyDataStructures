@@ -33,8 +33,7 @@ Let's turn this into a recursive function.
 def list_sum_rec(num_list):
     if len(num_list) == 1:
         return num_list[0]
-    else:
-        return num_list[0] + list_sum(num_list[1:])
+    return num_list[0] + list_sum(num_list[1:])
     
 print(list_sum_rec([1,3,5,7,9]))
 
@@ -100,7 +99,7 @@ print(to_str(100, 10))
 
 """
 This example gives an insight onto what we call the STACK FRAME.
-The stack frame is essentially what Pyhton uses to handle the local variables of a function.
+The stack frame is essentially what Python uses to handle the local variables of a function.
 So in a recursive function, each function call is added to the stack frame until we reach the base case,
 which equates to a result instead of a function call, and that result is added to the top of the stack frame.
 
@@ -288,6 +287,7 @@ def tree(branch_len, t):
 
 def main():
     t = turtle.Turtle()
+    t.speed(0)
     my_win = turtle.Screen()
     t.left(90)
     t.up()
@@ -296,15 +296,15 @@ def main():
     # t.color("brown")
     tree(75, t)
     my_win.exitonclick()
-main()
+# main()
 
 """
 What this should make you realise is that Recursion is basically just a Depth First Search!
 
 The reason why is because similarly to Stacks, they are both Last-In-First-Out (LIFO)!
-
 The last thing you add is the first thing you evaluate!
 
+To be honest, the best way to think about recursion is like a STACK.
 
 Some more actually awesome Turtle examples. We start with the Sierpinski Triangle, another fractal.
 """
