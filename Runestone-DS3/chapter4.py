@@ -140,12 +140,12 @@ def is_pal(s):
         return is_pal(s[1:-1])
     return False
 
-assert(is_pal(remove_white("x")), True)
-assert(is_pal(remove_white("radar")), True)
-assert(is_pal(remove_white("hello")), False)
-assert(is_pal(remove_white("")), True)
-assert(is_pal(remove_white("hannah")), True)
-assert(is_pal(remove_white("madam i'm adam")), True)
+assert is_pal(remove_white("x")) is True
+assert is_pal(remove_white("radar")) is True
+assert is_pal(remove_white("hello")) is False
+assert is_pal(remove_white("")) is True
+assert is_pal(remove_white("hannah")) is True
+assert is_pal(remove_white("madam i'm adam")) is True
 
 """
 Before we get to the next part here, just adding a big note here on ENVIRONMENTS.
@@ -215,7 +215,35 @@ the dependencies, packages, and modules you use for that project. Then you need 
 
 > source venv/bin/activate
 
-Once activated, you'll see the name of your virtual environment (venv) in terminal.
+Once activated, you'll see the name of your virtual environment (venv) in terminal. From there,
+you need to DEACTIVE and ACTIVATE the NEW virtual environment every time you switch projects.
+
+> deactivate
+
+The good thing is, VSCode handles most of this on its own when you open a new window/project.
+
+Final thing to add here is that you can often see a (base) at the start of your terminal command line.
+This refers to the ANACONDA base environment. You generally do NOT want to be using multiple environments,
+because it can make things confusing as to which environment has which packages and kind of loses the
+benefits of isolation. To deactivate the anaconda environment, use:
+
+> conda deactivate
+
+You can also deactivate both if you're in a simple terminal to return to your global Python environment.
+
+
+Another really useful thing to add here - you may remember always having issues with setting the PATH
+variable when starting with Python. This directly relates to everything we've discussed here -
+the PATH variable is an ENVIRONMENT VARIABLE; it contains a list of paths (directories) that the system
+looks through to find executables, dependencies, packages, modules, and so on.
+
+And actually, when you activate a virtual environment, it MODIFIES the PATH temporarily to point to the
+virtual environment's versions of Python and other tools!
+
+The PATH environment variable is pretty important - if PATH is empty or deleted, the system won't know
+where to look for all its programs, so any command you try to run in terminal will fail. Shell commands
+like ls, cd and so on will also fail. So, be very careful with it!
+
 
 Anyway, to summarise here, you should use a virtual environment for every different project you have.
 """
@@ -227,16 +255,16 @@ Anyway, to summarise here, you should use a virtual environment for every differ
 
 import turtle
 
-def draw_spiral(my_turtle, line_len):
-    if line_len > 0:
-        my_turtle.forward(line_len)
-        my_turtle.right(90)
-        draw_spiral(my_turtle, line_len-5)
+# def draw_spiral(my_turtle, line_len):
+#     if line_len > 0:
+#         my_turtle.forward(line_len)
+#         my_turtle.right(40)
+#         draw_spiral(my_turtle, line_len-2)
 
-my_turtle = turtle.Turtle()
-my_win = turtle.Screen()
-draw_spiral(my_turtle, 100)
-my_win.exitonclick()
+# my_turtle = turtle.Turtle()
+# my_win = turtle.Screen()
+# draw_spiral(my_turtle, 100)
+# my_win.exitonclick()
 
 """
 Pretty cool.
@@ -244,33 +272,97 @@ Pretty cool.
 And honestly one of the coolest uses of recursions I've ever seen: FRACTALS.
 """
 
-def tree(branch_len, t):
-    if branch_len > 5:
-        t.forward(branch_len)
-        t.right(20)
-        tree(branch_len - 15, t)
-        t.left(40)
-        tree(branch_len - 15, t)
-        t.right(20)
-        t.backward(branch_len)
+# def tree(branch_len, t):
+#     if branch_len > 5:
+#         t.pensize(branch_len / 75 * 20)
+#         t.forward(branch_len)
+#         t.right(20)
+#         tree(branch_len - 15, t)
+#         t.left(40)
+#         tree(branch_len - 15, t)
+#         t.right(20)
+#         t.color("brown")
+#         if branch_len < 20:
+#             t.color("green")
+#         t.backward(branch_len)
 
-def main():
-    t = turtle.Turtle()
-    my_win = turtle.Screen()
-    t.left(90)
-    t.up()
-    t.backward(100)
-    t.down()
-    t.color("green")
-    tree(75, t)
-    my_win.exitonclick()
-
-main()
+# def main():
+#     t = turtle.Turtle()
+#     my_win = turtle.Screen()
+#     my_win.setup(400, 400)
+#     t.left(90)
+#     t.up()
+#     t.backward(100)
+#     t.down()
+#     t.color("brown")
+#     tree(75, t)
+#     my_win.exitonclick()
+# main()
 
 """
 What this should make you realise is that Recursion is basically just a Depth First Search!
 
 The reason why is because similarly to Stacks, they are both Last-In-First-Out (LIFO)!
 
-The last thing you add is the first thing you evaluate
+The last thing you add is the first thing you evaluate!
+
+
+Some more actually awesome Turtle examples. We start with the Sierpinski Triangle, another fractal.
+"""
+
+def draw_triangle(points, color, my_turtle):
+    my_turtle.fillcolor(color)
+    my_turtle.up()
+    my_turtle.goto(points[0][0], points[0][1])
+    my_turtle.down()
+    my_turtle.begin_fill()
+    my_turtle.goto(points[1][0], points[1][1])
+    my_turtle.goto(points[2][0], points[2][1])
+    my_turtle.goto(points[0][0], points[0][1])
+    my_turtle.end_fill()
+
+
+def get_mid(p1, p2):
+    return ((p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2)
+
+
+def sierpinski(points, degree, my_turtle):
+    colormap = ["blue", "red", "green", "white", "yellow", "violet", "orange"]
+    draw_triangle(points, colormap[degree], my_turtle)
+    if degree > 0:
+        sierpinski(
+            [points[0], get_mid(points[0], points[1]), get_mid(points[0], points[2])],
+            degree - 1,
+            my_turtle,
+        )
+        sierpinski(
+            [points[1], get_mid(points[0], points[1]), get_mid(points[1], points[2])],
+            degree - 1,
+            my_turtle,
+        )
+        sierpinski(
+            [points[2], get_mid(points[2], points[1]), get_mid(points[0], points[2])],
+            degree - 1,
+            my_turtle,
+        )
+
+
+def main():
+    my_turtle = turtle.Turtle()
+    my_win = turtle.Screen()
+    my_points = [[-180, -150], [0, 150], [180, -150]]
+    my_points = [[x*2 for x in y] for y in my_points]
+    print(my_points)
+    sierpinski(my_points, 6, my_turtle)
+    my_win.exitonclick()
+
+main()
+
+"""
+Realising somethere here. When you watch this implementation, this is a DFS drawing of a fractal.
+But it should absolutely be possible to achieve the same thing with a BFS, i.e. drawing the bigger
+triangles before the smaller ones. I wonder if you'd still use recursion or not... you could probably
+do it both with and without it.
+
+Either way, TURTLE programming is awesome.
 """
