@@ -257,11 +257,10 @@ print(q.dequeue())
 print(q.size())
 
 """
+Note! enqueue and all operations on either end become O(1) when implemented with LinkedLists.
 enqueue() : O(n)
 dequeue() : O(1)
 search/insert : O(n)
-
-Queues aren't actually that efficient!
 """
 
 def josephus(n, k):
@@ -304,9 +303,9 @@ Pronounced 'deck'. Decks (deques) are double-ended queues, so essentially gain t
 of both stacks and queues. The key thing with deques is that the front and the rear MUST
 be kept track of at all times and kept consistent.
 
-We'll learn this later with Nodes, but deques are special because it only takes O(1) to
-append/pop from BOTH ends. This is because they're implemented with LinkedLists, rather than
-Python's List. E.g. for [1, 2, 3] it takes O(1) to add 4 = [1,2,3,4] or remove 1 = [2,3,4].
+Deques are pretty similar to queues in terms of time complexity, just with more operations available.
+E.g. for [1, 2, 3] you can both append 4 = [1,2,3,4], pop = [1,2], appendleft 0 = [0,1,2,3], or pop(0) = [2,3].
+All in O(1) time if implemented properly (with Nodes / LinkedLists).
 
 The implementation below is a simplified version without nodes, costing O(n) to add/pop from the tail
 but O(1) to add/pop from the head.
@@ -377,10 +376,7 @@ with a pointer to both the head and tail.
 
 We'll have more notes on Deques when we implement one with Nodes.
 
-"""
-
-
-"""
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 3.20: Linked Lists
 
@@ -461,7 +457,9 @@ class LinkedList:
         return self.head == None
     
     def size(self):
-        # Note that this is inefficient - simply for learning how to traverse the linkedlist
+        # Note that this is inefficient - simply for learning how to traverse the linkedlist.
+        # Normally you'll have a 'size' attribute that is incremented or decremented when nodes
+        # are added to the linked list.
         ctr = 0
         curr = self.head
         while curr:
@@ -499,7 +497,7 @@ class LinkedList:
 # If every time we called remove we needed to handle exceptions, it would make the rest
 # of our codebase unnecessarily tedious and unreadable. However, obviously some lists
 # might need to behave differently where all items should be carefully tracked, in which
-# case you'd implement an Error.
+# case you'd implement some sort of Exception/Error.
 
     def remove(self, item):
         curr = self.head
@@ -629,7 +627,7 @@ print(ll.pop(1))  # Remove 20
 """
 3.22: Sorted Lists
 
-This time we're gonna make a special kinda of LinkedList.
+This time we're gonna make a special kind of LinkedList.
 It's gonna be a List sorted ascendingly by number.
 Adding becomes more expensive because we can't just append or prepend anymore.
 

@@ -1,7 +1,7 @@
 import turtle
 
 def draw_triangle(my_turtle, line_len):
-    if line_len > 2:
+    if line_len > 28:
         my_turtle.forward(line_len)
         my_turtle.right(121)
         draw_triangle(my_turtle, line_len-2)
@@ -16,8 +16,8 @@ def draw_triangle_alt_colours(my_turtle, line_len, colour_idx):
 
 def draw_triangle_colours(my_turtle, line_len, ctr):
     # colour_map = ["red", "blue"]
-    # colour_map = ["red", "blue", "gold"]
-    colour_map = ["red", "darkorange", "gold", "green", "blue", "purple"]
+    colour_map = ["red", "blue", "gold"]
+    # colour_map = ["red", "darkorange", "gold", "green", "blue", "purple"]
     if line_len > 2:
         ctr += 1
         if ctr % 3 == 0:
@@ -94,6 +94,7 @@ def draw_hexagon(my_turtle, line_len):
 # t.left(90)
 # t.backward(150)
 # t.down()
+# t.pensize(5)
 # draw_hexagon(t, 300)
 
 
@@ -111,9 +112,9 @@ def draw_star(my_turtle, line_len, ctr):
 
 def draw_star_colours(my_turtle, line_len, ctr):
     # colour_map = ["red", "blue"]
-    # colour_map = ["red", "blue", "gold"]
+    colour_map = ["red", "blue", "gold"]
     # colour_map = ["red", "darkorange", "gold", "green", "blue"]
-    colour_map = ["red", "darkorange", "gold", "green", "blue", "purple"]
+    # colour_map = ["red", "darkorange", "gold", "green", "blue", "purple"]
     if line_len > 6:
         ctr += 1
         if ctr % 10 == 0:
@@ -123,9 +124,9 @@ def draw_star_colours(my_turtle, line_len, ctr):
             my_turtle.color(colour_map[new_index])
         my_turtle.forward(line_len)
         if ctr % 2 == 1:
-            my_turtle.left(72.1)
+            my_turtle.left(72.2)
         else:
-            my_turtle.right(143.9)
+            my_turtle.right(143.8)
         draw_star_colours(my_turtle, line_len-0.5, ctr)
 
 # STARS
@@ -136,10 +137,10 @@ t.right(18)
 t.down()
 # draw_star(t, 300, 0)
 
-t.pensize(20)
+t.pensize(5)
 t.color("red")
 draw_star_colours(t, 300, 0)
 
 t.up()
-t.backward(500)
+t.backward(1200)
 my_win.exitonclick()
