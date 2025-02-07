@@ -1,49 +1,54 @@
 import turtle
 
-def draw_triangle(points, color, my_turtle):
-    my_turtle.fillcolor(color)
-    my_turtle.up()
-    my_turtle.goto(points[0][0], points[0][1])
-    my_turtle.down()
-    my_turtle.begin_fill()
-    my_turtle.goto(points[1][0], points[1][1])
-    my_turtle.goto(points[2][0], points[2][1])
-    my_turtle.goto(points[0][0], points[0][1])
-    my_turtle.end_fill()
+def draw_line(my_turtle, line_len):
+    if line_len > 2:
+        my_turtle.forward(line_len)
+        my_turtle.right(121)
+        draw_line(my_turtle, line_len-2)
+
+def draw_line_alt_colours(my_turtle, line_len, colour_idx):
+    colour_map = ["red", "blue"]
+    if line_len > 2:
+        my_turtle.color(colour_map[colour_idx])
+        my_turtle.forward(line_len)
+        my_turtle.right(121)
+        draw_line_alt_colours(my_turtle, line_len-2, 1-colour_idx)
+
+def draw_line_triangle_colours(my_turtle, line_len, ctr):
+    colour_map = ["red", "blue"]
+    # colour_map = ["red", "blue", "gold"]
+    # colour_map = ["red", "darkorange", "gold", "green", "blue", "purple"]
+    if line_len > 2:
+        ctr += 1
+        if ctr % 3 == 0:
+            new_index = colour_map.index(my_turtle.color()[0]) + 1
+            if new_index > len(colour_map) - 1:
+                new_index = 0
+            my_turtle.color(colour_map[new_index])
+        my_turtle.forward(line_len)
+        my_turtle.right(121)
+        draw_line_triangle_colours(my_turtle, line_len-2, ctr)
+
+t = turtle.Turtle()
+my_win = turtle.Screen()
+t.speed(0)
+t.up()
+t.backward(200)
+t.left(90)
+t.backward(300)
+t.down()
 
 
-def get_mid(p1, p2):
-    return ((p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2)
+# Simple draw line
+# draw_line(t, 600)
 
+# Alternating colours / pen size
+t.color("red")
+t.pensize(6) # PLAY AROUND WITH THIS!!
 
-def sierpinski(points, degree, my_turtle):
-    colormap = ["blue", "red", "green", "white", "yellow", "violet", "orange"]
-    draw_triangle(points, colormap[degree], my_turtle)
-    if degree > 0:
-        sierpinski(
-            [points[0], get_mid(points[0], points[1]), get_mid(points[0], points[2])],
-            degree - 1,
-            my_turtle,
-        )
-        sierpinski(
-            [points[1], get_mid(points[0], points[1]), get_mid(points[1], points[2])],
-            degree - 1,
-            my_turtle,
-        )
-        sierpinski(
-            [points[2], get_mid(points[2], points[1]), get_mid(points[0], points[2])],
-            degree - 1,
-            my_turtle,
-        )
+# draw_line_alt_colours(t, 600, 0)
+draw_line_triangle_colours(t, 600, 0)
 
-
-def main():
-    my_turtle = turtle.Turtle()
-    my_win = turtle.Screen()
-    my_points = [[-180, -150], [0, 150], [180, -150]]
-    my_points = [[x*2 for x in y] for y in my_points]
-    print(my_points)
-    sierpinski(my_points, 6, my_turtle)
-    my_win.exitonclick()
-
-main()
+t.up()
+t.backward(500)
+my_win.exitonclick()
