@@ -130,17 +130,21 @@ def draw_star_colours(my_turtle, line_len, ctr):
         draw_star_colours(my_turtle, line_len-0.5, ctr)
 
 # STARS
-t.backward(250)
-t.left(90)
-t.backward(350)
-t.right(18)
-t.down()
-draw_star(t, 300, 0)
+# t.backward(250)
+# t.left(90)
+# t.backward(350)
+# t.right(18)
+# t.down()
+# draw_star(t, 300, 0)
 
-# t.pensize(5)
+# t.pensize(20)
 # t.color("red")
 # draw_star_colours(t, 300, 0)
 
 t.up()
 t.backward(1200)
 my_win.exitonclick()
+
+
+# Hilbert curve
+

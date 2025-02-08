@@ -591,7 +591,7 @@ num_coins = min(
     1 + num_coins(original_amount - $2)
 )
 
-An example smaller function is implemented below:
+An example function is implemented below:
 """
 
 recursions = 0
@@ -618,8 +618,8 @@ we end up with O(4^n) = O(4^42) recursions in the worst case!
 Given that we have the average case here, it takes 108,534 recursions.
 
 Super inefficient. Now, you may have also realised something - this isn't
-actually dynamic programming yet. It's DIVIDE AND CONQUER. The reason why
-is because we're not using DP's special tools: tabulation and memoization.
+actually dynamic programming yet. It's just brute force recursion with backtracking.
+The reason why is because we're not using DP's special tools: tabulation and memoization.
 We're just exponentially dividing the problem down into smaller subproblems.
 
 To give you an understanding of why this is so inefficient, consider that
@@ -652,6 +652,7 @@ def make_change_2(coin_value_list, change, known_results):
             known_results[change] = min_coins
     return min_coins
 
+print("\n~~~~~~~~Dynamic Programming~~~~~~~~")
 print(make_change_2([1, 5, 10, 25], 42, [0] * 43))
 print(f"{recursions} recursions!")
 
@@ -718,5 +719,105 @@ example above is 200+. We call this the RECURSION OVERHEAD.
 As such, if we really want to maximise efficiency we should always aim to find a tabulation solution
 first, then only move to memoization if that's too difficult / not possible.
 
+Anyway, the major takeaway from this chapter is that although recursion can often be used to simplify
+or speed up solutions, it is not always the most efficient answer.
+
+Let's print out the final dp so we can investigate DP tabulation in a bit more depth.
 """
 
+dp = [float("inf")] * (42 + 1)
+def make_change_tab(coin_value_list, change):
+    global dp
+    # Initialize DP table with a large number (inf means no solution found yet)
+    dp[0] = 0  # Base case: 0 coins needed for amount 0
+
+    # Compute the minimum coins required for each amount up to 'change'
+    for amount in range(1, change + 1):
+        for coin in coin_value_list:
+            if coin <= amount:
+                dp[amount] = min(dp[amount], 1 + dp[amount - coin])
+
+    return dp[change] if dp[change] != float("inf") else -1  # Return -1 if no solution
+
+print(make_change_tab([1, 5, 10, 25], 42))
+print(dp)
+
+"""
+4.15 Exercises
+"""
+
+def factorial_recursive(n):
+    if n <= 1:
+        return 1
+    return n*factorial_recursive(n-1)
+
+print(f"Factorial of 10 is {factorial_recursive(10)}.")
+
+
+def reversal_recursive(ls):
+    if len(ls) <= 1:
+        return ls
+    return reversal_recursive(ls[1:]) + [ls[0]] 
+# Note that recursive reversal is inefficient due to slicing. 
+# O(n^2) whereas O(n) is possible with two pointers.
+    
+print(f"Reversal of list [1, 2, 3, 4] is {reversal_recursive([1,2,3,4])}.")
+
+iterations = 0
+def fibonacci(n):
+    global iterations
+    if n <= 1:
+        return n
+    a, b = 0, 1
+    for _ in range(2, n+1):
+        iterations += 1
+        temp = a
+        a = b
+        b = temp + b
+    return b
+
+iterations2 = 0
+def fibonacci_recursive(n):
+    global iterations2
+    iterations2 += 1
+    if n <= 1:
+        return n
+    return fibonacci_recursive(n-1) + fibonacci_recursive(n-2)
+
+print(f"Fibonacci number 10 is {fibonacci(10)} with iteration ({iterations} iterations) and {fibonacci_recursive(10)} with recursion ({iterations2} iterations).")
+
+"""
+Relevant note here.
+
+Firstly, you're dumb. Took way too long to get the iterative fibonacci.
+Second, the recursive fibonacci ends up being O(2^n), as compared to O(n) in iterative.
+9 iterations compared to 177!
+
+Why?
+
+Because again, it's just brute-force recursion without memoization/tabulation.
+
+Let's try a DP solution. DP with tabulation.
+"""
+iterations3 = 0
+    
+def fibonacci_dp(n):
+    global iterations3
+    dp = [0] * (n+1)
+    dp[0] = 0
+    dp[1] = 1
+
+    for num in range(2, n+1):
+        iterations3 += 1
+        dp[num] = dp[num-1] + dp[num-2]
+    
+    return dp[n]
+
+print(f"Fibonacci number 10 is {fibonacci_dp(10)} with dynamic programming ({iterations3} iterations).")
+
+"""
+Much better. But I think this brings up an important point; for simple problems, simple iteration is often
+most effective. As long as it's efficiently implemented.
+
+Try to use recursion with dynamic programming or some other algo (divide and conquer, DFS, etc)
+"""
