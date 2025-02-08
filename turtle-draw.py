@@ -35,9 +35,8 @@ t.speed(0)
 t.up()
 
 # TRIANGLES
-# t.backward(200)
+# t.setpos(-200, -300)
 # t.left(90)
-# t.backward(300)
 # t.down()
 # draw_triangle(t, 600)
 
@@ -70,9 +69,8 @@ def draw_square_colours(my_turtle, line_len, ctr):
         draw_square_colours(my_turtle, line_len-2, ctr)
 
 # SQUARES
-# t.backward(300)
+# t.setpos(-300, -300)
 # t.left(90)
-# t.backward(300)
 # t.down()
 # draw_square(t, 600)
 
@@ -90,9 +88,8 @@ def draw_hexagon(my_turtle, line_len):
         draw_hexagon(my_turtle, line_len-2)
 
 # HEXAGONS
-# t.backward(300)
+# t.setpos(-300, -150)
 # t.left(90)
-# t.backward(150)
 # t.down()
 # t.pensize(5)
 # draw_hexagon(t, 300)
@@ -130,10 +127,8 @@ def draw_star_colours(my_turtle, line_len, ctr):
         draw_star_colours(my_turtle, line_len-0.5, ctr)
 
 # STARS
-# t.backward(250)
-# t.left(90)
-# t.backward(350)
-# t.right(18)
+# t.setpos(-250, -350)
+# t.left(72)
 # t.down()
 # draw_star(t, 300, 0)
 
@@ -141,10 +136,48 @@ def draw_star_colours(my_turtle, line_len, ctr):
 # t.color("red")
 # draw_star_colours(t, 300, 0)
 
-t.up()
-t.backward(1200)
-my_win.exitonclick()
-
+def turtle_colour(t, order) -> turtle.Turtle:
+    colour_map = ["blue","turquoise","palegreen","gold","red","magenta"]
+    t.color(colour_map[order-1])
+    return t
 
 # Hilbert curve
+def hilbert_curve(t, order, size, angle=90):
+    if order == 0:
+        return
 
+    t.left(-angle)
+    hilbert_curve(t, order-1, size, -angle)
+    t = turtle_colour(t, order)
+    t.forward(size)
+    
+    t.left(angle)
+    hilbert_curve(t, order-1, size, angle)
+    t = turtle_colour(t, order)
+    t.forward(size)
+
+    hilbert_curve(t, order-1, size, angle)
+    t.left(angle)
+    t = turtle_colour(t, order)
+    t.forward(size)
+
+    hilbert_curve(t, order-1, size, -angle)
+    t.left(-angle)
+
+
+
+t.setpos(370, -370)
+t.pensize(3)
+t.left(180) # start straight
+t.down()
+t.color("seagreen")
+t.speed(0)
+
+hilbert_curve(t, 6, 10, 90)
+
+
+
+
+# t.up()
+# t.backward(1200)
+my_win.exitonclick()
