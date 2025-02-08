@@ -164,18 +164,41 @@ def hilbert_curve(t, order, size, angle=90):
     hilbert_curve(t, order-1, size, -angle)
     t.left(-angle)
 
-
-
 t.setpos(370, -370)
 t.pensize(3)
 t.left(180) # start straight
 t.down()
-t.color("seagreen")
 t.speed(0)
 
 hilbert_curve(t, 6, 10, 90)
 
 
+# Koch snowflake
+def koch_curve(t, order, size):
+    if order == 0:
+        t.forward(size)
+    else:
+        size /= 3.0
+        koch_curve(t, order-1, size)
+        t.left(-60)
+        koch_curve(t, order-1, size)
+        t.right(-120)
+        koch_curve(t, order-1, size)
+        t.left(-60)
+        koch_curve(t, order-1, size)
+
+# Function to draw the Koch snowflake
+def koch_snowflake(t, order, size):
+    for _ in range(3):
+        koch_curve(t, order, size)
+        t.right(-120)
+
+# t.setpos(-350, -180)
+# t.pensize(2)
+# t.down()
+# t.speed(0)
+
+# koch_snowflake(t, 5, 650)
 
 
 # t.up()

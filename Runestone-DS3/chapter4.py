@@ -819,5 +819,6 @@ print(f"Fibonacci number 10 is {fibonacci_dp(10)} with dynamic programming ({ite
 Much better. But I think this brings up an important point; for simple problems, simple iteration is often
 most effective. As long as it's efficiently implemented.
 
-Try to use recursion with dynamic programming or some other algo (divide and conquer, DFS, etc)
+Try to use recursion with dynamic programming or some other algo (divide and conquer, DFS, etc) to make it
+efficient.
 """
