@@ -933,8 +933,6 @@ You guessed it. Dynamic programming.
 """
 
 def o1_knapsack_tabulation(max_weight, items):
-    # create table of weights up to max_weight, with total value possible at each weight
-    # then just return the total value at max weight
     n = len(items)
     dp = [[0] * (max_weight+1) for _ in range(n+1)]
     # Note that you MUST use list comprehension here (or a loop) - you can't just multiply
@@ -985,6 +983,43 @@ value (i.e. a better item can now be used since it fits in the weight requiremen
 have to 'recur' to one previous value since the table is built incrementally. So we essentially
 don't actually recur.
 
-Anyway, what makes this even more complex is that there's a far more efficient algorithm here.
-Let's have a look.
+Anyway, what makes this even more complex is that guess what? There's a far more efficient algorithm.
+It uses dynamic programming, and the idea is that at any given point in time in our current algorithm,
+the recurrence relation only depends on the previous row. So theoretically we only need to keep track
+of one row.
+
+Let's give it a shot.
+"""
+
+def o1_knapsack_tabulation_efficient(max_weight, items):
+    # create table of weights up to max_weight, with total value possible at each weight
+    # then just return the total value at max weight
+    n = len(items)
+    dp = [0]*(max_weight+1)
+
+    for i in range(0, n):
+        weight, value = items[i]
+        for w in range(max_weight, weight-1, -1):
+            dp[w] = max(dp[w], value+dp[w-weight])
+
+    return dp[max_weight]
+
+print(f"Max value: {o1_knapsack_tabulation_efficient(20, items)}")
+
+"""
+Same solution of 29. Although the time complexity stays the same at O(nW),
+the space complexity drops to O(W) since we're only keeping track of the one
+row.
+
+The reason this approach works is because we iterate BACKWARDS, ensuring that
+we never overwrite values that are yet to be computed. If we iterated forward,
+we'd be using the newly updated values of dp[] within the same iteration, leading
+to incorrect results.
+
+Ultimately, the key to DP is to think about it with the RECURSION FAIRY. The
+recursion fairy can solve the previous recurrence magically. I.e. assume that
+dp[i-1] or dp[w-weight] can and will be returned correctly. How would you then
+create the recurrence with that assumption?
+
+That concludes chapter 4.
 """
