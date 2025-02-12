@@ -74,7 +74,7 @@ print(convert_base(1453, 16))
 """
 See how much simpler this solution is compared to using the divide by 2 algo with stacks?
 
-Let's compare to another stack solution:
+Let's compare to the stack solution:
 """
 
 from pythonds3.basic import Stack
@@ -162,7 +162,7 @@ use an environment.
 
 The useful thing about environments is that you have the system-wide environment which
 is the default environment used when you install an environment-dependent programming
-language, e.g. Python. This include the default Python version and system-wide libraries
+language, e.g. Python. This includes the default Python version and system-wide libraries
 such as string, random, sys, etc.
 
 However, IDEs such as Visual Studio Code here allow us to create VIRTUAL ENVIRONMENTS.
@@ -565,7 +565,7 @@ We basically just choose the biggest coin we can at each step.
 This idea of always choosing the 'best' option at each recursive step is called a
 GREEDY algorithm. We know these well, but lots more on that later.
 
-However, what if we introduced a new denomiation of coin, e.g. 40c?
+However, what if we introduced a new denomination of coin, e.g. 40c?
 
 All of a sudden, our greedy algorithm doesn't find the most optimal solution, since
 the new optimal becomes:
@@ -622,9 +622,13 @@ actually dynamic programming yet. It's just brute force recursion with backtrack
 The reason why is because we're not using DP's special tools: tabulation and memoization.
 We're just exponentially dividing the problem down into smaller subproblems.
 
+Note also that it isn't Divide and Conquer either - the subproblems are overlapping,
+which is never the case in a D&C algorithm. Very characteristic of dynamic programming,
+though.
+
 To give you an understanding of why this is so inefficient, consider that
 when trying to solve this problem with a target of 42, we would feasibly have
-to recurse to the smaller target of 12 in multiple ways - for example, 42 minus
+to recurse through the smaller target of 12 in multiple ways - for example, 42 minus
 10c minus 10c minus 10c, or replace any of those with minus 5c x 2. However,
 each time we get to this same target, WE'RE RECALCULATING THE RESULT THROUGH
 RECURSION EACH TIME, even though WE'VE ALREADY CALCULATED IT BEFORE.
@@ -661,8 +665,8 @@ How insane is that. We've gone from 108,534 recursions to just 122 !!
 
 Now note that even though we're using a table, THIS IS NOT TABULATION.
 This is instead called MEMOIZATION (or CACHING). The reason why is because 
-memoization refers to top-down dynamic programming (i.e. start at biggest problem
-and divide them down from there), while tabulation refers to bottom-up
+memoization refers to top-down dynamic programming (i.e. start at the top recursion
+and divide down from there), while tabulation refers to bottom-up
 dynamic programming (i.e. solve the subproblems first, then solve the
 biggest problem without recursion).
 
@@ -670,9 +674,9 @@ To understand this a bit better, let's go into a bit more depth on memoization.
 What you'll note is that the results table is initially just a table of zeroes,
 i.e. empty. Then as the function recursively calls and finds a result that isn't
 in the table, it adds that result AS NEEDED. At the end of all recursions, the
-table may not even be fully filled in - for example, if 1 was not a coin
+table may not be fully filled in - for example, if 1 was not a coin
 denomination there would feasibly be many holes in the table, e.g. calculating the
-change required for 39 would never be needed.
+change required for 39 would never be needed for a target of 42.
 
 In contrast, tabulation does this all the other way. It actually starts by FILLING
 OUT the table, which is what takes up the bulk of our solution, allowing us to simply
@@ -743,6 +747,17 @@ print(make_change_tab([1, 5, 10, 25], 42))
 print(dp)
 
 """
+The last thing I wanna leave here is that if you think a bit more abstractly about
+DP with memoization vs tabulation, they're both very similar in concept to the
+algorithm used in DFS vs BFS. Memoization goes straight through to depth, while
+tabulation goes level by level, filling in all values.
+
+It's not a perfect representation by any means, because tabulation technically fills
+in all leaves of the tree (even if they don't exist), but memoization is pretty well
+captured by the idea of a DFS.
+
+Anyway, onto the practicals.
+
 4.15 Exercises
 """
 
@@ -821,4 +836,155 @@ most effective. As long as it's efficiently implemented.
 
 Try to use recursion with dynamic programming or some other algo (divide and conquer, DFS, etc) to make it
 efficient.
+
+Next up we're revisiting a possibly difficult problem. Knapsack baby.
+
+Problem 17:
+Suppose you are a computer scientist/art thief who has broken into a major art gallery. All you have with you
+to haul out your stolen art is your knapsack which only holds pounds of art, but for every piece of art you 
+know its value and its weight. Write a dynamic programming function to help you maximize your profit. 
+Here is a sample problem for you to get started: suppose your knapsack can hold a total weight of 20 pounds. 
+You have 5 items as follows:
+item     weight      value
+  1        2           3
+  2        3           4
+  3        4           8
+  4        5           8
+  5        9          10
+
+Solve this problem first as fractional, meaning you can take fractions of art for a fraction of the
+value and weight. Note that this is just to demonstrate the GREEDY solution.
+"""
+
+def fractional_knapsack_greedy(max_weight, items):
+    # Sort by value / weight
+    # Loop through sorted list, taking the best value / weight item each time
+    curr_weight = max_weight
+    curr_value = 0
+
+    sorted_items = sorted(items, key=lambda x:x[1]/x[0], reverse=True) # Assume value is never 0
+    for item in sorted_items:
+        frac = min(curr_weight/item[0], 1)
+        curr_weight -= frac*item[0]
+        curr_value += frac*item[1]
+
+        if curr_weight == 0:
+            break # Early exit
+
+    return max_weight-curr_weight, curr_value
+
+# Format: (weight, value)
+items = [(2,3), (3,4), (4,8), (5,8), (9,10)]
+# Max value you can get using fractions is 29.66.
+# 1 of each item plus 2/3 of the last one.
+
+print("\nKnapsack")
+knapsack_w, knapsack_v = fractional_knapsack_greedy(20, items)
+print(f"Weight: {knapsack_w}, Value: {knapsack_v}")
+
+"""
+As you can see, the greedy algorithm solves fractional knapsack fairly easily.
+Time complexity is O(n log n) because the sorting step dominates the loop step.
+Looping through the sorted items is just O(n).
+
+As a learning exercise, write down the full T(n) relation.
+T(n) = 2 + n log n + 5n + 1 = n log n + 5n + 3 = O(n log n).
+
+Great. Now let's change it up a little bit. This time, you can't take fractions
+of items - only the full item. This is more realistic, because you often can't
+take fractional amounts of the item at a time. We call this 0/1 Knapsack.
+
+We'll try solving with greedy first.
+"""
+
+def o1_knapsack_greedy(max_weight, items):
+    # Sort by value / weight
+    # Loop through sorted list, taking the best value / weight item each time
+    curr_weight = max_weight
+    knapsack = []
+
+    sorted_items = sorted(items, key=lambda x:x[1]/x[0] if x[0] != 0 else -1, reverse=True)
+    for item in sorted_items:
+        if item[0] <= curr_weight:
+            knapsack.append(item)
+            curr_weight -= item[0]
+
+    return knapsack
+
+
+items = [(2,3), (3,4), (4,8), (5,8), (9,10)]
+knapsack = o1_knapsack_greedy(20, items)
+print(knapsack)
+print(f"Weight: {sum([x[0] for x in knapsack])}, Value: {sum([x[1] for x in knapsack])}")
+
+"""
+This time our result is different - we don't have enough space in the knapsack to take
+the entire last item, which weighs 9 pounds. But what may not be apparent at first is that
+the value taken of 23 is NOT the optimal solution!
+
+Think about it. We're essentially wasting 6 pounds of space in the knapsack. In fact,
+the optimal solution nets you a value of 29, which really isn't far off the fractional solution.
+
+You simply take every item except the 2nd one (3,4). Weight=2+4+5+9=20, Value=3+8+8+10=29.
+
+So, what's a better algorithm to solve this optimally?
+
+You guessed it. Dynamic programming.
+"""
+
+def o1_knapsack_tabulation(max_weight, items):
+    # create table of weights up to max_weight, with total value possible at each weight
+    # then just return the total value at max weight
+    n = len(items)
+    dp = [[0] * (max_weight+1) for _ in range(n+1)]
+    # Note that you MUST use list comprehension here (or a loop) - you can't just multiply
+    # the list by n (number of items). This is because you create shallow copies, meaning
+    # that edits to dp[0][0] = 1 will also change dp[1][0], dp[2][0] and so on.
+    # It's really important to understand why the dp table is created the way it is.
+    # The table is actually (each different possible weight) x (each different possible item)
+    # instead of the other way round. The idea is that you fill out the table according to
+    # the possible items you can steal. I.e. the first row of the table is the max value
+    # when you can only steal ZERO ITEMS in the items list, i.e. a list of zeroes. That's for the base case.
+    # The second row of the table is the max value when you can steal only item #1 in the list.
+    # So on and so forth.
+    # The idea is that the dp builds primarily from the list of items increasing 1 by 1, not the weight.
+    # But again, it's two dimensional so it does increase secondarily 1 by 1 on weight in the second loop.
+
+    for i in range(1, n+1):
+        weight, value = items[i-1]
+        for w in range(1,max_weight+1):
+            if weight <= w:
+                dp[i][w] = max(dp[i-1][w], value + dp[i-1][w-weight])
+            else:
+                dp[i][w] = dp[i-1][w]
+
+    return dp[n][max_weight]
+
+print(f"Max value: {o1_knapsack_tabulation(20, items)}")
+
+"""
+This time we get the correct solution of 29. Honestly it's pretty difficult to write out
+an accurate understanding of how this dynamic programming solution works, and I'd
+recommend drawing out the table and manually filling it out to really get a sense of why it works.
+Or watching a video.
+
+First off, the time complexity is O(nW), where W is the max weight (capacity) of the knapsack.
+That should be pretty clear given that we loop through each weight for each item.
+
+Now, let's try to explain it. dp[i][w] stores the maximum value that can be achieved using the first
+i items with a maximum weight of w. The table has (n+1) rows, representing the first n items that
+can be used in that row, and (max_weight +1) columns, representing the possible weight capacities
+of a knapsack.
+
+The table's first row and first column are all zeroes. This essentially ensures our recurrence
+never fails, since it can depend on it's base cases: dp[0][w] = 0 for all w, dp[i][0] = 0 for all i.
+
+Each value builds progressively, with no value in dp being less than a value earlier in the table
+(earlier both in row and column terms). Each time that a value in dp can be updated with a higher
+value (i.e. a better item can now be used since it fits in the weight requirements), we only ever
+have to 'recur' to one previous value since the table is built incrementally. So we essentially
+don't actually recur.
+
+Anyway, what makes this even more complex is that there's a far more efficient algorithm here.
+Let's have a look.
 """
